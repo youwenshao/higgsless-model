@@ -9,12 +9,14 @@ def register(app: typer.Typer) -> None:
     from higgsless.cli.commands import (
         bench_cmd,
         config_cmd,
+        doctor_cmd,
         engines_cmd,
         models_cmd,
         worker_cmd,
         workflows_cmd,
     )
 
+    app.command("doctor")(doctor_cmd.doctor)
     app.add_typer(config_cmd.app, name="config")
     app.add_typer(engines_cmd.app, name="engines")
     app.add_typer(workflows_cmd.app, name="workflows")

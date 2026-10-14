@@ -1,0 +1,17 @@
+numpy
+scipy
+pillow
+opencv-python-headless
+scenedetect[opencv-headless]>=0.6.5
+scikit-learn
+soundfile
+librosa
+pyloudnorm
+audio-separator[gpu]>=0.30
+transformers>=4.45
+huggingface_hub[hf_transfer]>=0.34
+mediapipe>=0.10.14
+opentimelineio>=0.17
+# GPL-3.0: imported only by worker/gpl/* scripts, never by the higgsless package.
+pedalboard>=0.9
+matchering>=2.0

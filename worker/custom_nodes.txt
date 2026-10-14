@@ -1,0 +1,9 @@
+# name url [git ref]   (bootstrap.sh installs these into ComfyUI/custom_nodes)
+# Most engines use native ComfyUI nodes (Wan-Animate-2, SCAIL-2, Bernini-R, SAM3, SeedVR2, frame
+# interpolation, Qwen-Image 2.1, Qwen3-VL text generation, MediaPipe, InfiniteTalk, VACE).
+ComfyUI-KJNodes https://github.com/kijai/ComfyUI-KJNodes
+ComfyUI-WanAnimatePreprocess https://github.com/kijai/ComfyUI-WanAnimatePreprocess
+ComfyUI-LatentSyncWrapper https://github.com/ShmuelRonen/ComfyUI-LatentSyncWrapper
+# Optional engines (uncomment to enable upscale.flashvsr and interp.gimm_vfi):
+# ComfyUI-FlashVSR https://github.com/1038lab/ComfyUI-FlashVSR
+# ComfyUI-GIMM-VFI https://github.com/kijai/ComfyUI-GIMM-VFI
