@@ -75,7 +75,11 @@ class ToolRunner:
     def _native_env(self, image_key: str, env: dict[str, str] | None) -> dict[str, str] | None:
         if not self.native(image_key):
             return None
-        merged = {"PYTHONPATH": remote_join(self.cfg.worker_dir, "src"), "HIGGSLESS_DATA_ROOT": self.cfg.data_root}
+        merged = {
+            "PYTHONPATH": remote_join(self.cfg.worker_dir, "src"),
+            "HIGGSLESS_WORKER": self.cfg.worker_dir,
+            "HIGGSLESS_DATA_ROOT": self.cfg.data_root,
+        }
         merged.update(env or {})
         return merged
 

@@ -8,6 +8,7 @@ import typer
 def register(app: typer.Typer) -> None:
     from higgsless.cli.commands import (
         analysis_cmd,
+        audio_cmd,
         bench_cmd,
         config_cmd,
         doctor_cmd,
@@ -33,6 +34,9 @@ def register(app: typer.Typer) -> None:
     app.command("review")(render_cmd.review)
     app.command("pick")(render_cmd.pick)
     app.command("conform")(render_cmd.conform)
+    app.add_typer(audio_cmd.audio_app, name="audio")
+    app.add_typer(audio_cmd.lyrics_app, name="lyrics")
+    app.add_typer(audio_cmd.voice_app, name="voice")
     app.command("doctor")(doctor_cmd.doctor)
     app.add_typer(config_cmd.app, name="config")
     app.add_typer(engines_cmd.app, name="engines")
