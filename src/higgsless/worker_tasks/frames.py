@@ -81,6 +81,17 @@ def task(params: dict[str, Any], out: Path) -> dict[str, Any]:
         dst.write_text(json.dumps(params["paths"]), encoding="utf-8")
         return {"outputs": {"list": [str(dst)]}}
 
+    if action == "resample":
+        paths = params["paths"]
+        count = int(params["count"])
+        if not paths:
+            raise RuntimeError("no frames to resample")
+        index = [round(i * (len(paths) - 1) / max(1, count - 1)) for i in range(count)]
+        chosen = [paths[i] for i in index]
+        listing = out / params["name"]
+        listing.write_text(json.dumps(chosen), encoding="utf-8")
+        return {"outputs": {"list": [str(listing)]}}
+
     if action == "metrics":
         paths = json.loads(Path(params["list"]).read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:

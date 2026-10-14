@@ -84,3 +84,51 @@ def conform(
     app = get_ctx(ctx)
     result = run_conform(Stage(app), audio=audio, resolution=resolution, pull=pull, name=name)
     app.out.result(result, f"{result['video']} ({result['frames']} frames, {result['duration_s']} s)")
+
+
+def lipsync(
+    ctx: typer.Context,
+    shot_ids: list[str] = typer.Argument(None),
+    force: bool = typer.Option(False),
+) -> None:
+    """Re-sync mouths in rendered shots to the new vocal."""
+    from higgsless.pipeline.lipsync import lipsync_shot
+
+    app = get_ctx(ctx)
+    stage = Stage(app)
+    targets = shot_ids or [s.id for s in stage.project.shots]
+    results = {sid: lipsync_shot(stage, sid, force=force) for sid in targets}
+    app.out.result(results)
+
+
+def finish(
+    ctx: typer.Context,
+    shot_ids: list[str] = typer.Argument(None),
+    force: bool = typer.Option(False),
+) -> None:
+    """Interpolate, upscale and colour-match rendered shots."""
+    from higgsless.pipeline.finish import finish_shot
+
+    app = get_ctx(ctx)
+    stage = Stage(app)
+    targets = shot_ids or [s.id for s in stage.project.shots]
+    app.out.result({sid: finish_shot(stage, sid, force=force) for sid in targets})
+
+
+def run(
+    ctx: typer.Context,
+    until: str = typer.Option("conform", help="Stop after this stage."),
+) -> None:
+    """Run every stage that is ready, stopping at the first review gate."""
+    from higgsless.pipeline.run import run as run_pipeline
+
+    app = get_ctx(ctx)
+    app.out.result(run_pipeline(Stage(app), until))
+
+
+def status(ctx: typer.Context) -> None:
+    """Show how far the project has got."""
+    from higgsless.pipeline.run import status as project_status
+
+    app = get_ctx(ctx)
+    app.out.result(project_status(Stage(app)))

@@ -1,0 +1,7 @@
+---
+description: How to drive the higgsless pipeline from this repo.
+alwaysApply: true
+---
+
+When working in higgsless-model, follow `.cursor/skills/higgsless/SKILL.md`. Run `higgsless` with `--json`,
+do not edit `projects/<name>/state/`, and do not clone a real person's voice unless the voice profile records consent.

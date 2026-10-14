@@ -15,5 +15,13 @@ vocals using open models. It is a local, open-source stand-in for Higgsfield Gen
 The CLI runs on your laptop. All GPU work runs on a Linux workstation (RTX 5090) that hosts
 ComfyUI and a few Docker tool containers, reached over Tailscale or the LAN.
 
-See [docs/superpowers/specs/2026-10-14-higgsless-model-design.md](docs/superpowers/specs/2026-10-14-higgsless-model-design.md)
-for the design and [AGENTS.md](AGENTS.md) for how agents drive the pipeline.
+`higgsless --json status` shows how far a project has got, and `higgsless --json run --until conform` runs every
+stage that is ready, stopping when a keyframe or a lyric line needs a decision.
+
+The commands, in order: `init`, `ingest`, `shots detect`, `analyze`, `cast assign`, `char create`,
+`keyframe make`, `keyframe approve`, `render`, `audio separate`, `audio transcribe`, `lyrics fit`,
+`voice create`, `audio sing`, `audio mix`, `lipsync`, `finish`, `conform`.
+
+`higgsless --json doctor` checks the workstation. GPU setup is `worker/bootstrap.sh` on the Linux machine.
+The design is in [docs/superpowers/specs/2026-10-14-higgsless-model-design.md](docs/superpowers/specs/2026-10-14-higgsless-model-design.md)
+and [AGENTS.md](AGENTS.md) shows the same flow for an agent.
