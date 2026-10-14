@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Local configuration (copy config/workstation.example.yaml)
+config/workstation.yaml
+
+# Projects hold media, previews and per-project state; version them separately if you like.
+projects/*
+!projects/README.md
+
+# Media and caches
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.flac
+.cache/
