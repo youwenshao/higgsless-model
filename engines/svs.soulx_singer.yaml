@@ -1,0 +1,18 @@
+id: svs.soulx_singer
+title: SoulX-Singer score-mode singing synthesis (EN, ZH, YUE)
+capability: svs
+backend: docker
+default: true
+image: soulx
+task: soulx
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- soulx_singer
+- soulx_preprocess
+defaults:
+  action: sing
+  control: score
+  auto_shift: true

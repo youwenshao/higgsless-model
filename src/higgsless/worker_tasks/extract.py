@@ -65,10 +65,30 @@ def task(params: dict[str, Any], out: Path) -> dict[str, Any]:
     elif action == "gen_clip":
         # Generator input for one shot: decimated, scaled, optionally trimmed to one window (lossless).
         dst = out / params["name"]
-        vf = ff.gen_filter(int(params["width"]), int(params["height"]), int(params.get("decimate", 1)),
-                           params.get("start"), params.get("end"))
-        sh(["ffmpeg", "-y", "-v", "error", "-i", src, "-vf", vf, "-fps_mode", "passthrough", "-an",
-            *ff.LOSSLESS_ARGS, str(dst)])
+        vf = ff.gen_filter(
+            int(params["width"]),
+            int(params["height"]),
+            int(params.get("decimate", 1)),
+            params.get("start"),
+            params.get("end"),
+        )
+        sh(
+            [
+                "ffmpeg",
+                "-y",
+                "-v",
+                "error",
+                "-i",
+                src,
+                "-vf",
+                vf,
+                "-fps_mode",
+                "passthrough",
+                "-an",
+                *ff.LOSSLESS_ARGS,
+                str(dst),
+            ]
+        )
         if params.get("expect_frames"):
             _check_frames(str(dst), int(params["expect_frames"]))
         outputs = {"clip": [str(dst)]}

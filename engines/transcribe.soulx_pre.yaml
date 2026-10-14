@@ -1,0 +1,15 @@
+id: transcribe.soulx_pre
+title: 'SoulX-Singer preprocess: F0, notes and word-timed lyrics'
+capability: transcribe
+backend: docker
+default: true
+image: soulx
+task: soulx
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- soulx_preprocess
+defaults:
+  action: preprocess

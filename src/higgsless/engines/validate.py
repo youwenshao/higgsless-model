@@ -7,6 +7,8 @@ from typing import Any
 
 # Inputs that accept any type.
 _WILDCARDS = {"*", "ANY", "any"}
+# Input-file pickers whose values are always bound at run time.
+_INPUT_FILES = {("LoadImage", "image"), ("LoadVideo", "file"), ("LoadAudio", "audio")}
 
 
 @dataclass
@@ -102,6 +104,8 @@ def validate_workflow(
                         issues.append(Issue("error", label, f"input {name!r} expects {kind}, linked to {out_type}"))
                 continue
             if kind == "COMBO" and options is not None and value not in options:
+                if (cls, name) in _INPUT_FILES:
+                    continue
                 level = "error" if strict_combos else "warning"
                 issues.append(Issue(level, label, f"{name}={value!r} is not among the server's options"))
             elif kind in {"INT", "FLOAT"}:
@@ -112,6 +116,9 @@ def validate_workflow(
                     if (lo is not None and value < lo) or (hi is not None and value > hi):
                         issues.append(Issue("error", label, f"{name}={value} outside [{lo}, {hi}]"))
         for name in _required(info) - set(inputs):
+            kind, _, _ = _input_type(specs.get(name))
+            if kind and kind.startswith("COMFY_AUTOGROW"):
+                continue  # dynamic lists may legitimately be empty
             if not any(k.startswith(name + ".") for k in inputs):
                 issues.append(Issue("error", label, f"missing required input {name!r}"))
     return issues

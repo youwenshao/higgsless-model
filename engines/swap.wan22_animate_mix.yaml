@@ -1,0 +1,47 @@
+id: swap.wan22_animate_mix
+title: Wan2.2-Animate Mix mode (swap one performer, relit)
+capability: swap
+backend: comfyui
+workflow: swap.wan22_animate_mix/standard.api.json
+bindings: swap.wan22_animate_mix/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+  notes: pose preprocessing uses Ultralytics YOLOv10 weights (AGPL-3.0)
+constraints:
+  dim_multiple: 16
+  window: 77
+  overlap: 5
+  max_people: 1
+models:
+- wan22_animate_int8@draft
+- wan22_animate_int8@standard
+- wan22_animate_bf16@max
+- wan22_animate_relight
+- lightx2v_i2v_480p
+- umt5_xxl_fp8
+- wan21_vae
+- clip_vision_h
+- sam31
+- yolov10m
+- vitpose_l
+node_packs:
+- ComfyUI-WanAnimatePreprocess
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: euler
+  scheduler: simple
+  shift: 5.0
+  relight_lora: wan2.2_animate_14B_relight_lora_bf16.safetensors
+  speed_lora: lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+  unet: wan2.2_animate_14B_int8_convrot.safetensors
+  performer_index: '0'
+  mask_grow: 16
+profiles:
+  max:
+    unet: wan2.2_animate_14B_bf16.safetensors
+    speed_lora:
+    steps: 30
+    cfg: 3.0

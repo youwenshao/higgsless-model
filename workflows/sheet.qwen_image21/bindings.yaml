@@ -1,0 +1,61 @@
+params:
+  prompt:
+    target: Encode.prompt
+    type: str
+    required: true
+  negative:
+    target: Encode.negative_prompt
+    type: str
+    default: ''
+  width:
+    target: Canvas.width
+    type: int
+  height:
+    target: Canvas.height
+    type: int
+  resolution:
+    target: Encode.resolution
+    type: int
+  seed:
+    target: Sampler.seed
+    type: seed
+  steps:
+    target: Sampler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+  cache:
+    target: Model Cache.device
+    type: str
+    optional_node: Model Cache
+    default: auto
+  image_1:
+    target: Image 1.image
+    type: input_path
+    required: true
+    description: First reference; also sets the canvas size unless width/height are set
+  image_2:
+    target: Image 2.image
+    type: input_path
+    optional_node: Image 2
+  image_3:
+    target: Image 3.image
+    type: input_path
+    optional_node: Image 3
+  image_4:
+    target: Image 4.image
+    type: input_path
+    optional_node: Image 4
+bypass:
+  Model Cache:
+    0: model
+  Image 2: remove
+  Image 3: remove
+  Image 4: remove
+outputs:
+  image:
+    node: Save Image

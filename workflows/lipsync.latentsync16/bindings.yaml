@@ -1,0 +1,22 @@
+params:
+  video:
+    target: Video.file
+    type: input_path
+    required: true
+  audio:
+    target: Vocal.audio
+    type: input_path
+    required: true
+    description: Dry vocal slice for exactly this shot
+  seed:
+    target: LatentSync.seed
+    type: seed
+  lips_expression:
+    target: LatentSync.lips_expression
+    type: float
+  steps:
+    target: LatentSync.inference_steps
+    type: int
+outputs:
+  frames:
+    node: Save Frames

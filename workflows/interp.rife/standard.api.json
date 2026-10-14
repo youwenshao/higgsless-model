@@ -1,0 +1,62 @@
+{
+ "1": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "placeholder.mp4"
+  },
+  "_meta": {
+   "title": "Video"
+  }
+ },
+ "2": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "1",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Video Frames"
+  }
+ },
+ "3": {
+  "class_type": "FrameInterpolationModelLoader",
+  "inputs": {
+   "model_name": "rife_v4.26.safetensors"
+  },
+  "_meta": {
+   "title": "Interpolation Model"
+  }
+ },
+ "4": {
+  "class_type": "FrameInterpolate",
+  "inputs": {
+   "interp_model": [
+    "3",
+    0
+   ],
+   "images": [
+    "2",
+    0
+   ],
+   "multiplier": 2
+  },
+  "_meta": {
+   "title": "Interpolate"
+  }
+ },
+ "5": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "4",
+    0
+   ],
+   "filename_prefix": "frames"
+  },
+  "_meta": {
+   "title": "Save Frames"
+  }
+ }
+}

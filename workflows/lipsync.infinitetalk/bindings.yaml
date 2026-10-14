@@ -1,0 +1,66 @@
+params:
+  start_image:
+    target: Start Image.image
+    type: input_path
+    required: true
+    description: First frame of the rendered shot (the take being lip-synced)
+  audio:
+    target: Vocal.audio
+    type: input_path
+    required: true
+  previous_video:
+    target: Previous Frames.file
+    type: input_path
+    optional_node:
+    - Previous Frames Frames
+    - Previous Frames
+  prompt:
+    target: Positive Prompt.text
+    type: str
+    required: true
+  negative:
+    target: Negative Prompt.text
+    type: str
+  width:
+    target: InfiniteTalk.width
+    type: int
+    required: true
+  height:
+    target: InfiniteTalk.height
+    type: int
+    required: true
+  length:
+    target: InfiniteTalk.length
+    type: int
+    required: true
+  audio_scale:
+    target: InfiniteTalk.audio_scale
+    type: float
+  speed_lora:
+    target: Speed LoRA.lora_name
+    type: str
+    optional_node: Speed LoRA
+  seed:
+    target:
+    - Sampler.noise_seed
+    type: seed
+  steps:
+    target: Scheduler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  sampler:
+    target: Sampler Select.sampler_name
+    type: str
+  scheduler:
+    target: Scheduler.scheduler
+    type: str
+bypass:
+  Speed LoRA:
+    0: model
+  Previous Frames: remove
+  Previous Frames Frames: remove
+outputs:
+  frames:
+    node: Save Frames

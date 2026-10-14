@@ -26,8 +26,9 @@ def detect(
 ) -> None:
     """Detect shot boundaries, cut per-shot mezzanines and write a contact sheet."""
     app_ctx = get_ctx(ctx)
-    summary = shots_stage.detect(Stage(app_ctx), min_frames=min_frames, adaptive=adaptive, content=content,
-                                 transnet=transnet, force=force)
+    summary = shots_stage.detect(
+        Stage(app_ctx), min_frames=min_frames, adaptive=adaptive, content=content, transnet=transnet, force=force
+    )
     app_ctx.out.result(summary, f"{summary['count']} shots; contact sheet: {summary['contact_sheet']}")
 
 
@@ -41,14 +42,23 @@ def list_shots(ctx: typer.Context) -> None:
     data = []
     for s in project.shots:
         analysis = handle.state.read(f"analysis/{s.id}") or {}
-        data.append({
-            "id": s.id, "frames": s.frames, "length": s.length,
-            "start_tc": frame_to_timecode(s.start, rate) if rate else None,
-            "mode": s.mode.value, "engine": s.engine, "lipsync": s.lipsync.value, "transition": s.transition,
-            "people": len(analysis.get("people", [])) if analysis else None,
-            "face_frac": (analysis.get("faces") or {}).get("max_frac") if analysis else None,
-        })
-    rows = [[d["id"], d["start_tc"], d["length"], d["mode"], d["engine"] or "", d["people"], d["lipsync"]] for d in data]
+        data.append(
+            {
+                "id": s.id,
+                "frames": s.frames,
+                "length": s.length,
+                "start_tc": frame_to_timecode(s.start, rate) if rate else None,
+                "mode": s.mode.value,
+                "engine": s.engine,
+                "lipsync": s.lipsync.value,
+                "transition": s.transition,
+                "people": len(analysis.get("people", [])) if analysis else None,
+                "face_frac": (analysis.get("faces") or {}).get("max_frac") if analysis else None,
+            }
+        )
+    rows = [
+        [d["id"], d["start_tc"], d["length"], d["mode"], d["engine"] or "", d["people"], d["lipsync"]] for d in data
+    ]
     app_ctx.out.result(data, table("shots", ["id", "start", "frames", "mode", "engine", "people", "lipsync"], rows))
 
 
@@ -94,8 +104,53 @@ def set_shot(
     app_ctx.out.result({"updated": targets}, f"updated {len(targets)} shot(s)")
 
 
+@app.command("suggest")
+def suggest(
+    ctx: typer.Context,
+    apply: bool = typer.Option(False, help="Write the suggested mode/engine into shots still set to auto."),
+) -> None:
+    """Explain the auto router's mode, engine and lip-sync choice for every shot."""
+    from higgsless.engines.registry import registry
+    from higgsless.engines.router import decide
+    from higgsless.pipeline.analyze import performer_of
+
+    app_ctx = get_ctx(ctx)
+    handle = app_ctx.project
+    project = handle.load()
+    stage = Stage(app_ctx)
+    decisions = []
+    for shot in project.shots:
+        analysis = handle.state.read(f"analysis/{shot.id}")
+        tracks = {p["track"]: performer_of(stage, shot.id, p["track"]) for p in (analysis or {}).get("people", [])}
+        decisions.append(
+            decide(
+                project,
+                shot,
+                analysis,
+                registry(),
+                {k: v for k, v in tracks.items() if v},
+                new_vocals=bool(project.audio.lead_voice),
+            )
+        )
+    if apply:
+        by_id = {d.shot: d for d in decisions}
+        with handle.edit() as data:
+            for entry in data["shots"]:
+                d = by_id[entry["id"]]
+                if entry.get("mode", "auto") == "auto":
+                    entry["mode"] = d.mode
+                    if d.engine and not entry.get("engine"):
+                        entry["engine"] = d.engine
+    rows = [[d.shot, d.mode, d.engine or "", "yes" if d.lipsync else "", "; ".join(d.warnings)[:60]] for d in decisions]
+    app_ctx.out.result(
+        [d.to_dict() for d in decisions], table("router", ["shot", "mode", "engine", "lipsync", "warnings"], rows)
+    )
+
+
 @app.command("split")
-def split(ctx: typer.Context, shot_id: str, at: int = typer.Option(..., help="Absolute source frame to split at.")) -> None:
+def split(
+    ctx: typer.Context, shot_id: str, at: int = typer.Option(..., help="Absolute source frame to split at.")
+) -> None:
     """Split a shot in two at a source frame (the new shot gets a letter suffix)."""
     app_ctx = get_ctx(ctx)
     ids = shots_stage.split(Stage(app_ctx), shot_id, at)

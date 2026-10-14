@@ -61,23 +61,39 @@ def shots_contact_sheet(stage: Stage) -> str | None:
         items.append({"path": stage.join(stage.shot_dir(s.id), "first.png"), "label": label})
     if not items:
         return None
-    res = stage.task("contact", {"items": items, "name": "shots.jpg", "title": f"{project.project}: shots"},
-                     stage.rpath("previews"))
+    res = stage.task(
+        "contact", {"items": items, "name": "shots.jpg", "title": f"{project.project}: shots"}, stage.rpath("previews")
+    )
     return str(stage.pull(res["outputs"]["sheet"][0], "shots.jpg"))
 
 
-def detect(stage: Stage, *, min_frames: int = 8, adaptive: float = 3.0, content: float = 27.0,
-           transnet: bool = True, force: bool = False) -> dict[str, Any]:
+def detect(
+    stage: Stage,
+    *,
+    min_frames: int = 8,
+    adaptive: float = 3.0,
+    content: float = 27.0,
+    transnet: bool = True,
+    force: bool = False,
+) -> dict[str, Any]:
     project = stage.project
     source = stage.require_source()
     if project.shots and not force:
-        raise ConfigError("shots are already detected", hint="pass --force to redo; settings of unchanged shots are kept")
+        raise ConfigError(
+            "shots are already detected", hint="pass --force to redo; settings of unchanged shots are kept"
+        )
     ingest_state = _ingest_state(stage)
     stage.progress("detecting shot boundaries")
     res = stage.task(
         "shots",
-        {"path": ingest_state["proxy"], "frames": source.frames, "min_frames": min_frames, "adaptive": adaptive,
-         "content": content, "transnet": transnet},
+        {
+            "path": ingest_state["proxy"],
+            "frames": source.frames,
+            "min_frames": min_frames,
+            "adaptive": adaptive,
+            "content": content,
+            "transnet": transnet,
+        },
         stage.rpath("shots"),
     )
     entries = shot_entries(res["shots"], res.get("transitions", []), project.shots)
@@ -85,8 +101,12 @@ def detect(stage: Stage, *, min_frames: int = 8, adaptive: float = 3.0, content:
         data["shots"] = entries
     extract_shots(stage, stage.project.shots)
     sheet = shots_contact_sheet(stage)
-    summary = {"count": len(entries), "detectors": res.get("detectors"), "transitions": res.get("transitions", []),
-               "contact_sheet": sheet}
+    summary = {
+        "count": len(entries),
+        "detectors": res.get("detectors"),
+        "transitions": res.get("transitions", []),
+        "contact_sheet": sheet,
+    }
     stage.handle.state.write("shots", summary)
     return summary
 

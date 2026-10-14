@@ -1,0 +1,56 @@
+params:
+  source_video:
+    target: Source Video.file
+    type: input_path
+    required: true
+  prompt:
+    target: Positive Prompt.text
+    type: str
+    required: true
+  negative:
+    target: Negative Prompt.text
+    type: str
+  width:
+    target: VACE.width
+    type: int
+    required: true
+  height:
+    target: VACE.height
+    type: int
+    required: true
+  length:
+    target: VACE.length
+    type: int
+    required: true
+  strength:
+    target: VACE.strength
+    type: float
+  split_step:
+    target: Split Sigmas.step
+    type: int
+  seed:
+    target:
+    - Sampler.noise_seed
+    type: seed
+  steps:
+    target: Scheduler.steps
+    type: int
+  cfg:
+    target:
+    - Sampler.cfg
+    - Sampler Low.cfg
+    type: float
+  sampler:
+    target: Sampler Select.sampler_name
+    type: str
+  scheduler:
+    target: Scheduler.scheduler
+    type: str
+  mask_video:
+    target: Mask Video.file
+    type: input_path
+    required: true
+    description: White where the original performer must be removed
+outputs:
+  frames:
+    node: Save Frames

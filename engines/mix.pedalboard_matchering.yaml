@@ -1,0 +1,13 @@
+id: mix.pedalboard_matchering
+title: 'Mix and master: pedalboard, pyloudnorm, Matchering'
+capability: mix
+backend: docker
+default: true
+image: tools
+task: mix
+gpu: false
+licence:
+  weights: n/a
+  code: GPL-3.0 (out of process)
+  commercial: true
+models: []

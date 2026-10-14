@@ -1,0 +1,12 @@
+id: interp.film
+title: FILM frame interpolation
+capability: interp
+backend: comfyui
+workflow: interp.film/standard.api.json
+bindings: interp.film/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- film_net

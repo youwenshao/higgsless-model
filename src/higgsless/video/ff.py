@@ -17,8 +17,16 @@ def seek_time(frame: int, rate: Fraction) -> str:
     return f"{float((Fraction(frame) - Fraction(1, 4)) / rate):.6f}"
 
 
-def cut_clip(src: str, dst: str, start: int, count: int, rate: Fraction, *, vf: str | None = None,
-             codec_args: list[str] | None = None) -> list[str]:
+def cut_clip(
+    src: str,
+    dst: str,
+    start: int,
+    count: int,
+    rate: Fraction,
+    *,
+    vf: str | None = None,
+    codec_args: list[str] | None = None,
+) -> list[str]:
     """Frame-exact clip [start, start+count) re-encoded (no audio)."""
     argv = ["ffmpeg", "-y", "-v", "error", "-ss", seek_time(start, rate), "-i", src, "-frames:v", str(count)]
     if vf:
@@ -43,12 +51,30 @@ def gen_filter(width: int, height: int, decimate: int = 1, start: int | None = N
     return ",".join(parts)
 
 
-def encode_frames(pattern: str, dst: str, rate: Fraction, *, crf: int = 16, codec: str = "h264",
-                  start_number: int = 1, vf: str | None = None) -> list[str]:
+def encode_frames(
+    pattern: str,
+    dst: str,
+    rate: Fraction,
+    *,
+    crf: int = 16,
+    codec: str = "h264",
+    start_number: int = 1,
+    vf: str | None = None,
+) -> list[str]:
     """PNG sequence -> video at an exact rate."""
     vcodec = {"h264": "libx264", "hevc": "libx265"}[codec]
-    argv = ["ffmpeg", "-y", "-v", "error", "-framerate", format_rate(rate), "-start_number", str(start_number),
-            "-i", pattern]
+    argv = [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-framerate",
+        format_rate(rate),
+        "-start_number",
+        str(start_number),
+        "-i",
+        pattern,
+    ]
     if vf:
         argv += ["-vf", vf]
     argv += ["-c:v", vcodec, "-crf", str(crf), "-preset", "slow", "-pix_fmt", "yuv420p"]
@@ -65,8 +91,28 @@ def audio_wav(src: str, dst: str, rate: int = 48000) -> list[str]:
 def proxy(src: str, dst: str, short_edge: int = 480) -> list[str]:
     """Frame-preserving low-res proxy for detection and previews."""
     vf = f"scale=-2:{short_edge}:flags=bilinear"
-    return ["ffmpeg", "-y", "-v", "error", "-i", src, "-vf", vf, "-fps_mode", "passthrough", "-c:v", "libx264",
-            "-crf", "23", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-an", dst]
+    return [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        src,
+        "-vf",
+        vf,
+        "-fps_mode",
+        "passthrough",
+        "-c:v",
+        "libx264",
+        "-crf",
+        "23",
+        "-preset",
+        "veryfast",
+        "-pix_fmt",
+        "yuv420p",
+        "-an",
+        dst,
+    ]
 
 
 def frame_png(src: str, dst: str, frame: int, rate: Fraction) -> list[str]:

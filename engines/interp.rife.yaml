@@ -1,0 +1,13 @@
+id: interp.rife
+title: RIFE 4.26 frame interpolation
+capability: interp
+backend: comfyui
+default: true
+workflow: interp.rife/standard.api.json
+bindings: interp.rife/bindings.yaml
+licence:
+  weights: MIT
+  code: MIT
+  commercial: true
+models:
+- rife_v426

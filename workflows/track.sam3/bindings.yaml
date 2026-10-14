@@ -1,0 +1,22 @@
+params:
+  video:
+    target: Video.file
+    type: input_path
+    required: true
+    description: Shot clip (relative to the data root)
+  text:
+    target: SAM3 Prompt.text
+    type: str
+    default: person
+  threshold:
+    target: Track People.detection_threshold
+    type: float
+  max_objects:
+    target: Track People.max_objects
+    type: int
+  detect_interval:
+    target: Track People.detect_interval
+    type: int
+outputs:
+  masks:
+    node: Save Masks

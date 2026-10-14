@@ -71,7 +71,9 @@ def task(params: dict[str, Any], out: Path) -> dict[str, Any]:
     path = params["path"]
     total = int(params["frames"])
     min_len = int(params.get("min_frames", 8))
-    cuts, fades = scenedetect_cuts(path, float(params.get("adaptive", 3.0)), float(params.get("content", 27.0)), min_len)
+    cuts, fades = scenedetect_cuts(
+        path, float(params.get("adaptive", 3.0)), float(params.get("content", 27.0)), min_len
+    )
     lists = [cuts]
     transitions = list(fades)
     detectors = ["pyscenedetect"]

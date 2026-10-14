@@ -1,0 +1,470 @@
+{
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "wan2.2_animate_14B_int8_convrot.safetensors",
+   "weight_dtype": "default"
+  },
+  "_meta": {
+   "title": "Diffusion Model"
+  }
+ },
+ "2": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ],
+   "lora_name": "wan2.2_animate_14B_relight_lora_bf16.safetensors",
+   "strength_model": 1.0
+  },
+  "_meta": {
+   "title": "Relight LoRA"
+  }
+ },
+ "3": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "lora_name": "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+   "strength_model": 1.0
+  },
+  "_meta": {
+   "title": "Speed LoRA"
+  }
+ },
+ "4": {
+  "class_type": "ModelSamplingSD3",
+  "inputs": {
+   "model": [
+    "3",
+    0
+   ],
+   "shift": 5.0
+  },
+  "_meta": {
+   "title": "Model Sampling"
+  }
+ },
+ "5": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+   "type": "wan",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "Text Encoder"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "5",
+    0
+   ],
+   "text": ""
+  },
+  "_meta": {
+   "title": "Positive Prompt"
+  }
+ },
+ "7": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "5",
+    0
+   ],
+   "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+  },
+  "_meta": {
+   "title": "Negative Prompt"
+  }
+ },
+ "8": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "wan_2.1_vae.safetensors"
+  },
+  "_meta": {
+   "title": "VAE"
+  }
+ },
+ "9": {
+  "class_type": "CLIPVisionLoader",
+  "inputs": {
+   "clip_name": "clip_vision_h.safetensors"
+  },
+  "_meta": {
+   "title": "CLIP Vision"
+  }
+ },
+ "10": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "placeholder.png"
+  },
+  "_meta": {
+   "title": "Reference Image"
+  }
+ },
+ "11": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "placeholder.mp4"
+  },
+  "_meta": {
+   "title": "Driving Video"
+  }
+ },
+ "12": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "11",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Driving Video Frames"
+  }
+ },
+ "13": {
+  "class_type": "OnnxDetectionModelLoader",
+  "inputs": {
+   "vitpose_model": "vitpose-l-wholebody.onnx",
+   "yolo_model": "yolov10m.onnx",
+   "onnx_device": "CUDAExecutionProvider"
+  },
+  "_meta": {
+   "title": "Pose Model"
+  }
+ },
+ "14": {
+  "class_type": "PoseAndFaceDetection",
+  "inputs": {
+   "model": [
+    "13",
+    0
+   ],
+   "images": [
+    "12",
+    0
+   ],
+   "width": 832,
+   "height": 480
+  },
+  "_meta": {
+   "title": "Pose And Face"
+  }
+ },
+ "15": {
+  "class_type": "DrawViTPose",
+  "inputs": {
+   "pose_data": [
+    "14",
+    0
+   ],
+   "width": 832,
+   "height": 480,
+   "retarget_padding": 16,
+   "body_stick_width": -1,
+   "hand_stick_width": -1,
+   "draw_head": true
+  },
+  "_meta": {
+   "title": "Draw Pose"
+  }
+ },
+ "16": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "SAM3 Model"
+  }
+ },
+ "17": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "16",
+    1
+   ],
+   "text": "person"
+  },
+  "_meta": {
+   "title": "SAM3 Prompt"
+  }
+ },
+ "18": {
+  "class_type": "SAM3_VideoTrack",
+  "inputs": {
+   "images": [
+    "12",
+    0
+   ],
+   "model": [
+    "16",
+    0
+   ],
+   "conditioning": [
+    "17",
+    0
+   ],
+   "detection_threshold": 0.5,
+   "max_objects": 4,
+   "detect_interval": 1
+  },
+  "_meta": {
+   "title": "Track Driving"
+  }
+ },
+ "19": {
+  "class_type": "SAM3_TrackToMask",
+  "inputs": {
+   "track_data": [
+    "18",
+    0
+   ],
+   "object_indices": "0"
+  },
+  "_meta": {
+   "title": "Pick Performer"
+  }
+ },
+ "20": {
+  "class_type": "GrowMask",
+  "inputs": {
+   "mask": [
+    "19",
+    0
+   ],
+   "expand": 16,
+   "tapered_corners": true
+  },
+  "_meta": {
+   "title": "Grow Mask"
+  }
+ },
+ "21": {
+  "class_type": "CLIPVisionEncode",
+  "inputs": {
+   "clip_vision": [
+    "9",
+    0
+   ],
+   "image": [
+    "10",
+    0
+   ],
+   "crop": "none"
+  },
+  "_meta": {
+   "title": "Reference Vision"
+  }
+ },
+ "22": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "placeholder.mp4"
+  },
+  "_meta": {
+   "title": "Continue Frames"
+  }
+ },
+ "23": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "22",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Continue Frames Frames"
+  }
+ },
+ "24": {
+  "class_type": "WanAnimateToVideo",
+  "inputs": {
+   "positive": [
+    "6",
+    0
+   ],
+   "negative": [
+    "7",
+    0
+   ],
+   "vae": [
+    "8",
+    0
+   ],
+   "width": 832,
+   "height": 480,
+   "length": 77,
+   "batch_size": 1,
+   "clip_vision_output": [
+    "21",
+    0
+   ],
+   "reference_image": [
+    "10",
+    0
+   ],
+   "face_video": [
+    "14",
+    1
+   ],
+   "pose_video": [
+    "15",
+    0
+   ],
+   "continue_motion_max_frames": 5,
+   "background_video": [
+    "12",
+    0
+   ],
+   "character_mask": [
+    "20",
+    0
+   ],
+   "continue_motion": [
+    "23",
+    0
+   ],
+   "video_frame_offset": 0
+  },
+  "_meta": {
+   "title": "Animate"
+  }
+ },
+ "25": {
+  "class_type": "KSamplerSelect",
+  "inputs": {
+   "sampler_name": "euler"
+  },
+  "_meta": {
+   "title": "Sampler Select"
+  }
+ },
+ "26": {
+  "class_type": "BasicScheduler",
+  "inputs": {
+   "model": [
+    "4",
+    0
+   ],
+   "scheduler": "simple",
+   "steps": 6,
+   "denoise": 1.0
+  },
+  "_meta": {
+   "title": "Scheduler"
+  }
+ },
+ "27": {
+  "class_type": "SamplerCustom",
+  "inputs": {
+   "model": [
+    "4",
+    0
+   ],
+   "add_noise": true,
+   "noise_seed": 0,
+   "cfg": 1.0,
+   "positive": [
+    "24",
+    0
+   ],
+   "negative": [
+    "24",
+    1
+   ],
+   "sampler": [
+    "25",
+    0
+   ],
+   "sigmas": [
+    "26",
+    0
+   ],
+   "latent_image": [
+    "24",
+    2
+   ]
+  },
+  "_meta": {
+   "title": "Sampler"
+  }
+ },
+ "28": {
+  "class_type": "TrimVideoLatent",
+  "inputs": {
+   "samples": [
+    "27",
+    0
+   ],
+   "trim_amount": [
+    "24",
+    3
+   ]
+  },
+  "_meta": {
+   "title": "Trim Latent"
+  }
+ },
+ "29": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "28",
+    0
+   ],
+   "vae": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Decode"
+  }
+ },
+ "30": {
+  "class_type": "ImageFromBatch",
+  "inputs": {
+   "image": [
+    "29",
+    0
+   ],
+   "batch_index": [
+    "24",
+    4
+   ],
+   "length": 4096
+  },
+  "_meta": {
+   "title": "Drop Overlap"
+  }
+ },
+ "31": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "30",
+    0
+   ],
+   "filename_prefix": "frames"
+  },
+  "_meta": {
+   "title": "Save Frames"
+  }
+ }
+}

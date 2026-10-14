@@ -1,0 +1,29 @@
+id: restyle.vace_fun
+title: Wan2.2-VACE-Fun restyle locked to depth
+capability: restyle
+backend: comfyui
+workflow: restyle.vace_fun/standard.api.json
+bindings: restyle.vace_fun/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+constraints:
+  dim_multiple: 16
+  window: 81
+  overlap: 0
+models:
+- vace_fun_high_fp8
+- vace_fun_low_fp8
+- lightx2v_t2v_high
+- lightx2v_t2v_low
+- umt5_xxl_fp8
+- wan21_vae
+- da3_small
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: euler
+  scheduler: simple
+  split_step: 3
+  strength: 1.0

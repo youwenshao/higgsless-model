@@ -1,0 +1,27 @@
+id: keyframe.qwen_edit2511
+title: Qwen-Image-Edit-2511 sample-scene keyframes and turnarounds
+capability: keyframe
+backend: comfyui
+default: true
+workflow: keyframe.qwen_edit2511/standard.api.json
+bindings: keyframe.qwen_edit2511/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- qwen_edit2511_int8
+- qwen_edit_lightning
+- qwen_edit_multiangle
+- qwen25_vl_7b_fp8
+- qwen_image_vae
+defaults:
+  steps: 4
+  cfg: 1.0
+  lightning_lora: Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+  angle_lora:
+profiles:
+  max:
+    lightning_lora:
+    steps: 40
+    cfg: 4.0

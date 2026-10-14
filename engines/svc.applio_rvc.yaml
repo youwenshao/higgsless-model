@@ -1,0 +1,16 @@
+id: svc.applio_rvc
+title: Applio RVC conversion with a trained voice
+capability: svc
+backend: docker
+image: applio
+task: applio
+licence:
+  weights: MIT
+  code: MIT
+  commercial: true
+models: []
+defaults:
+  action: infer
+  f0_method: rmvpe
+  index_rate: 0.5
+  protect: 0.4

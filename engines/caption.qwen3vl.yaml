@@ -1,0 +1,15 @@
+id: caption.qwen3vl
+title: Qwen3-VL captions
+capability: caption
+backend: comfyui
+default: true
+workflow: caption.qwen3vl/standard.api.json
+bindings: caption.qwen3vl/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- qwen3vl_4b_fp8
+defaults:
+  max_length: 400

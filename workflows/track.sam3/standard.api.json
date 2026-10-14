@@ -1,0 +1,96 @@
+{
+ "1": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "placeholder.mp4"
+  },
+  "_meta": {
+   "title": "Video"
+  }
+ },
+ "2": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "1",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Video Frames"
+  }
+ },
+ "3": {
+  "class_type": "CheckpointLoaderSimple",
+  "inputs": {
+   "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+  },
+  "_meta": {
+   "title": "SAM3 Model"
+  }
+ },
+ "4": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "clip": [
+    "3",
+    1
+   ],
+   "text": "person"
+  },
+  "_meta": {
+   "title": "SAM3 Prompt"
+  }
+ },
+ "5": {
+  "class_type": "SAM3_VideoTrack",
+  "inputs": {
+   "images": [
+    "2",
+    0
+   ],
+   "model": [
+    "3",
+    0
+   ],
+   "conditioning": [
+    "4",
+    0
+   ],
+   "detection_threshold": 0.5,
+   "max_objects": 8,
+   "detect_interval": 1
+  },
+  "_meta": {
+   "title": "Track People"
+  }
+ },
+ "6": {
+  "class_type": "SCAIL2ColoredMask",
+  "inputs": {
+   "driving_track_data": [
+    "5",
+    0
+   ],
+   "object_indices": "",
+   "sort_by": "left_to_right",
+   "replacement_mode": false
+  },
+  "_meta": {
+   "title": "Colored Masks"
+  }
+ },
+ "7": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "6",
+    0
+   ],
+   "filename_prefix": "masks"
+  },
+  "_meta": {
+   "title": "Save Masks"
+  }
+ }
+}

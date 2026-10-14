@@ -1,0 +1,16 @@
+id: svc.soulx_svc
+title: SoulX-Singer-SVC zero-shot singing voice conversion
+capability: svc
+backend: docker
+default: true
+image: soulx
+task: soulx
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- soulx_singer
+- soulx_preprocess
+defaults:
+  action: svc

@@ -1,0 +1,52 @@
+params:
+  base_image:
+    target: Base Image.image
+    type: input_path
+    required: true
+    description: Shot frame (keyframe) or character image (sheet/angles)
+  reference_2:
+    target: Reference 2.image
+    type: input_path
+    optional_node: Reference 2
+  reference_3:
+    target: Reference 3.image
+    type: input_path
+    optional_node: Reference 3
+  prompt:
+    target: Positive.prompt
+    type: str
+    required: true
+  negative:
+    target: Negative.prompt
+    type: str
+    default: ''
+  seed:
+    target: Sampler.seed
+    type: seed
+  steps:
+    target: Sampler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  lightning_lora:
+    target: Lightning LoRA.lora_name
+    type: str
+    optional_node: Lightning LoRA
+  angle_lora:
+    target: Angle LoRA.lora_name
+    type: str
+    optional_node: Angle LoRA
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+bypass:
+  Lightning LoRA:
+    0: model
+  Angle LoRA:
+    0: model
+  Reference 2: remove
+  Reference 3: remove
+outputs:
+  image:
+    node: Save Image

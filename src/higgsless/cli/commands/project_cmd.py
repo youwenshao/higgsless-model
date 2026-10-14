@@ -49,7 +49,13 @@ def validate(ctx: typer.Context) -> None:
     app = get_ctx(ctx)
     project = app.project.load(refresh=True)
     app.out.result(
-        {"project": project.project, "shots": len(project.shots), "characters": sorted(project.characters),
-         "voices": sorted(project.voices), "look": project.look.value, "profile": project.profile.value},
+        {
+            "project": project.project,
+            "shots": len(project.shots),
+            "characters": sorted(project.characters),
+            "voices": sorted(project.voices),
+            "look": project.look.value,
+            "profile": project.profile.value,
+        },
         f"{app.project.manifest_path} is valid",
     )

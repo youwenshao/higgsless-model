@@ -1,0 +1,20 @@
+id: lipsync.latentsync16
+title: LatentSync 1.6 mouth re-sync (realistic faces)
+capability: lipsync
+backend: comfyui
+default: true
+workflow: lipsync.latentsync16/standard.api.json
+bindings: lipsync.latentsync16/bindings.yaml
+licence:
+  weights: OpenRAIL++
+  code: Apache-2.0
+  commercial: true
+  notes: OpenRAIL++ use restrictions apply; weights download on first run
+constraints:
+  min_face_frac: 0.1
+models: []
+node_packs:
+- ComfyUI-LatentSyncWrapper
+defaults:
+  lips_expression: 1.5
+  steps: 20

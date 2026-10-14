@@ -1,0 +1,62 @@
+params:
+  source_video:
+    target: Source Video.file
+    type: input_path
+    required: true
+  prompt:
+    target: Positive Prompt.text
+    type: str
+    required: true
+    description: Edit instruction; refer to references as image0, image1
+  negative:
+    target: Negative Prompt.text
+    type: str
+  width:
+    target: Bernini.width
+    type: int
+    required: true
+  height:
+    target: Bernini.height
+    type: int
+    required: true
+  length:
+    target: Bernini.length
+    type: int
+    required: true
+  split_step:
+    target: Split Sigmas.step
+    type: int
+  speed_lora_high:
+    target: Speed LoRA High.lora_name
+    type: str
+    optional_node: Speed LoRA High
+  speed_lora_low:
+    target: Speed LoRA Low.lora_name
+    type: str
+    optional_node: Speed LoRA Low
+  seed:
+    target:
+    - Sampler.noise_seed
+    type: seed
+  steps:
+    target: Scheduler.steps
+    type: int
+  cfg:
+    target:
+    - Sampler.cfg
+    - Sampler Low.cfg
+    type: float
+  sampler:
+    target: Sampler Select.sampler_name
+    type: str
+  scheduler:
+    target: Scheduler.scheduler
+    type: str
+bypass:
+  Speed LoRA High:
+    0: model
+  Speed LoRA Low:
+    0: model
+outputs:
+  frames:
+    node: Save Frames

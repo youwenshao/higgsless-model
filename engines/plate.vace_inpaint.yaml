@@ -1,0 +1,31 @@
+id: plate.vace_inpaint
+title: Wan2.2-VACE-Fun clean plate (remove the original performer)
+capability: plate
+backend: comfyui
+default: true
+experimental: true
+workflow: plate.vace_inpaint/standard.api.json
+bindings: plate.vace_inpaint/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+constraints:
+  dim_multiple: 16
+  window: 81
+  overlap: 0
+models:
+- vace_fun_high_fp8
+- vace_fun_low_fp8
+- lightx2v_t2v_high
+- lightx2v_t2v_low
+- umt5_xxl_fp8
+- wan21_vae
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: euler
+  scheduler: simple
+  split_step: 3
+  strength: 1.0
+  prompt: empty scene, nobody, same location and lighting

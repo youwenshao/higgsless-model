@@ -1,0 +1,41 @@
+params:
+  prompt:
+    target: Encode.prompt
+    type: str
+    required: true
+  negative:
+    target: Encode.negative_prompt
+    type: str
+    default: ''
+  width:
+    target: Canvas.width
+    type: int
+  height:
+    target: Canvas.height
+    type: int
+  resolution:
+    target: Encode.resolution
+    type: int
+  seed:
+    target: Sampler.seed
+    type: seed
+  steps:
+    target: Sampler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+  cache:
+    target: Model Cache.device
+    type: str
+    optional_node: Model Cache
+    default: auto
+bypass:
+  Model Cache:
+    0: model
+outputs:
+  image:
+    node: Save Image

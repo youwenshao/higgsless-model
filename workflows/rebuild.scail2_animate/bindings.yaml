@@ -1,0 +1,99 @@
+params:
+  reference_image:
+    target: Reference Image.image
+    type: input_path
+    required: true
+    description: Composite keyframe with every new character in place
+  driving_video:
+    target: Driving Video.file
+    type: input_path
+    required: true
+  previous_video:
+    target: Previous Frames.file
+    type: input_path
+    optional_node:
+    - Previous Frames Frames
+    - Previous Frames
+  skip_frames:
+    target: Drop Overlap.batch_index
+    type: int
+    description: Frames re-decoded from the previous window
+  prompt:
+    target: Positive Prompt.text
+    type: str
+    required: true
+  negative:
+    target: Negative Prompt.text
+    type: str
+  track_text:
+    target: SAM3 Prompt.text
+    type: str
+  max_people:
+    target:
+    - Track Driving.max_objects
+    - Track Reference.max_objects
+    type: int
+  width:
+    target: SCAIL.width
+    type: int
+    required: true
+  height:
+    target: SCAIL.height
+    type: int
+    required: true
+  length:
+    target: SCAIL.length
+    type: int
+    required: true
+  video_frame_offset:
+    target: SCAIL.video_frame_offset
+    type: int
+  pose_strength:
+    target: SCAIL.pose_strength
+    type: float
+  shift:
+    target: Model Sampling.shift
+    type: float
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+  relight_lora:
+    target: Relight LoRA.lora_name
+    type: str
+    optional_node: Relight LoRA
+  dpo_lora:
+    target: DPO LoRA.lora_name
+    type: str
+    optional_node: DPO LoRA
+  speed_lora:
+    target: Speed LoRA.lora_name
+    type: str
+    optional_node: Speed LoRA
+  seed:
+    target:
+    - Sampler.noise_seed
+    type: seed
+  steps:
+    target: Scheduler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  sampler:
+    target: Sampler Select.sampler_name
+    type: str
+  scheduler:
+    target: Scheduler.scheduler
+    type: str
+bypass:
+  Relight LoRA:
+    0: model
+  DPO LoRA:
+    0: model
+  Speed LoRA:
+    0: model
+  Previous Frames: remove
+  Previous Frames Frames: remove
+outputs:
+  frames:
+    node: Save Frames

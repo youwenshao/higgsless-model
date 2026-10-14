@@ -47,7 +47,7 @@ class Stage:
         root = self.cfg.data_root.rstrip("/\\")
         if not path.startswith(root):
             raise ConfigError(f"{path} is outside the data root {root}")
-        return path[len(root):].lstrip("/\\").replace("\\", "/")
+        return path[len(root) :].lstrip("/\\").replace("\\", "/")
 
     def progress(self, message: str) -> None:
         self.app.out.progress(message)
@@ -58,13 +58,24 @@ class Stage:
                 deploy_worker(self.ex, self.cfg.worker_dir)
             self.app._worker_checked = True
 
-    def task(self, name: str, params: dict[str, Any], output_dir: str, *, gpu: bool = False,
-             image: str = "tools", timeout: float | None = None) -> dict[str, Any]:
+    def task(
+        self,
+        name: str,
+        params: dict[str, Any],
+        output_dir: str,
+        *,
+        gpu: bool = False,
+        image: str = "tools",
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
         self.ensure_worker()
         runner = ToolRunner(self.cfg, self.ex, self.app.comfy if gpu else None)
         return runner.run_task(
-            name, ["--output-dir", output_dir, "--params", json.dumps(params, ensure_ascii=False)],
-            gpu=gpu, image=image, timeout=timeout,
+            name,
+            ["--output-dir", output_dir, "--params", json.dumps(params, ensure_ascii=False)],
+            gpu=gpu,
+            image=image,
+            timeout=timeout,
             on_line=lambda line: self.progress(line) if line.strip() and self.app.verbose else None,
         )
 

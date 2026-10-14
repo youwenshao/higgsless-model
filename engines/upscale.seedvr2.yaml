@@ -1,0 +1,24 @@
+id: upscale.seedvr2
+title: SeedVR2 video restoration and upscale
+capability: upscale
+backend: comfyui
+default: true
+workflow: upscale.seedvr2/standard.api.json
+bindings: upscale.seedvr2/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- seedvr2_3b_fp8@draft
+- seedvr2_7b_nvfp4@standard
+- seedvr2_7b_fp8@max
+- seedvr2_vae
+defaults:
+  unet: seedvr2_7b_nvfp4.safetensors
+  color_correction: lab
+profiles:
+  draft:
+    unet: seedvr2_3b_fp8_e4m3fn.safetensors
+  max:
+    unet: seedvr2_7b_fp8_e4m3fn.safetensors

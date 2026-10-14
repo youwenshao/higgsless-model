@@ -1,0 +1,25 @@
+params:
+  video:
+    target: Video.file
+    type: input_path
+    required: true
+  width:
+    target: Resize.width
+    type: int
+    required: true
+  height:
+    target: Resize.height
+    type: int
+    required: true
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+  color_correction:
+    target: Post.color_correction_method
+    type: str
+  seed:
+    target: Sampler.seed
+    type: seed
+outputs:
+  frames:
+    node: Save Frames

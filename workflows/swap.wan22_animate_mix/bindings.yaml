@@ -1,0 +1,90 @@
+params:
+  reference_image:
+    target: Reference Image.image
+    type: input_path
+    required: true
+  driving_video:
+    target: Driving Video.file
+    type: input_path
+    required: true
+  continue_video:
+    target: Continue Frames.file
+    type: input_path
+    optional_node:
+    - Continue Frames Frames
+    - Continue Frames
+  performer_index:
+    target: Pick Performer.object_indices
+    type: str
+    description: SAM3 object index (left to right) to replace
+  mask_grow:
+    target: Grow Mask.expand
+    type: int
+  prompt:
+    target: Positive Prompt.text
+    type: str
+    required: true
+  negative:
+    target: Negative Prompt.text
+    type: str
+  width:
+    target:
+    - Animate.width
+    - Pose And Face.width
+    - Draw Pose.width
+    type: int
+    required: true
+  height:
+    target:
+    - Animate.height
+    - Pose And Face.height
+    - Draw Pose.height
+    type: int
+    required: true
+  length:
+    target: Animate.length
+    type: int
+    required: true
+  video_frame_offset:
+    target: Animate.video_frame_offset
+    type: int
+  shift:
+    target: Model Sampling.shift
+    type: float
+  unet:
+    target: Diffusion Model.unet_name
+    type: str
+  relight_lora:
+    target: Relight LoRA.lora_name
+    type: str
+    optional_node: Relight LoRA
+  speed_lora:
+    target: Speed LoRA.lora_name
+    type: str
+    optional_node: Speed LoRA
+  seed:
+    target:
+    - Sampler.noise_seed
+    type: seed
+  steps:
+    target: Scheduler.steps
+    type: int
+  cfg:
+    target: Sampler.cfg
+    type: float
+  sampler:
+    target: Sampler Select.sampler_name
+    type: str
+  scheduler:
+    target: Scheduler.scheduler
+    type: str
+bypass:
+  Relight LoRA:
+    0: model
+  Speed LoRA:
+    0: model
+  Continue Frames: remove
+  Continue Frames Frames: remove
+outputs:
+  frames:
+    node: Save Frames

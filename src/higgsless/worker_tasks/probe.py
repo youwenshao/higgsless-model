@@ -32,8 +32,21 @@ def probe_file(path: str, count: bool = True) -> dict[str, Any]:
         warnings.append(f"variable frame rate suspected (r={r_rate}, avg={avg_rate}); using r_frame_rate")
     frames = int(video["nb_frames"]) if str(video.get("nb_frames", "")).isdigit() else None
     if frames is None or count:
-        out = sh([ffprobe, "-v", "error", "-select_streams", "v:0", "-count_packets", "-show_entries",
-                  "stream=nb_read_packets", "-of", "csv=p=0", path])
+        out = sh(
+            [
+                ffprobe,
+                "-v",
+                "error",
+                "-select_streams",
+                "v:0",
+                "-count_packets",
+                "-show_entries",
+                "stream=nb_read_packets",
+                "-of",
+                "csv=p=0",
+                path,
+            ]
+        )
         frames = int(out.strip().split(",")[0])
     duration = float(data["format"].get("duration") or video.get("duration") or frames / float(rate))
     return {

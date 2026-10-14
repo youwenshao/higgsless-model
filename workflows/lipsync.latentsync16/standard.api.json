@@ -1,0 +1,64 @@
+{
+ "1": {
+  "class_type": "LoadVideo",
+  "inputs": {
+   "file": "placeholder.mp4"
+  },
+  "_meta": {
+   "title": "Video"
+  }
+ },
+ "2": {
+  "class_type": "GetVideoComponents",
+  "inputs": {
+   "video": [
+    "1",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Video Frames"
+  }
+ },
+ "3": {
+  "class_type": "LoadAudio",
+  "inputs": {
+   "audio": "placeholder.wav"
+  },
+  "_meta": {
+   "title": "Vocal"
+  }
+ },
+ "4": {
+  "class_type": "LatentSyncNode",
+  "inputs": {
+   "images": [
+    "2",
+    0
+   ],
+   "audio": [
+    "3",
+    0
+   ],
+   "seed": 1247,
+   "lips_expression": 1.5,
+   "inference_steps": 20
+  },
+  "_meta": {
+   "title": "LatentSync"
+  }
+ },
+ "5": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "4",
+    0
+   ],
+   "filename_prefix": "frames"
+  },
+  "_meta": {
+   "title": "Save Frames"
+  }
+ }
+}

@@ -1,0 +1,28 @@
+id: portrait.qwen_image21
+title: Qwen-Image 2.1 character portrait (text to image)
+capability: portrait
+backend: comfyui
+default: true
+workflow: portrait.qwen_image21/standard.api.json
+bindings: portrait.qwen_image21/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- qwen_image21_int8@draft
+- qwen_image21_int8@standard
+- qwen_image21_bf16@max
+- qwen3vl_8b_int8
+- qwen_image21_vae
+defaults:
+  width: 832
+  height: 1216
+  steps: 25
+  cfg: 1.0
+  cache: auto
+  unet: qwen_image_2.1_int8_convrot.safetensors
+profiles:
+  max:
+    unet: qwen_image_2.1_bf16.safetensors
+    steps: 40

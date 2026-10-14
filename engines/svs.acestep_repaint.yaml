@@ -1,0 +1,14 @@
+id: svs.acestep_repaint
+title: ACE-Step 1.5 repaint with new lyrics (JA, KO and others)
+capability: svs
+backend: docker
+experimental: true
+image: acestep
+task: acestep
+licence:
+  weights: MIT
+  code: MIT
+  commercial: true
+models: []
+defaults:
+  action: repaint

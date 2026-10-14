@@ -1,0 +1,46 @@
+id: swap.scail2
+title: SCAIL-2 replacement mode (keep the shot, swap 1-4 performers)
+capability: swap
+backend: comfyui
+default: true
+workflow: swap.scail2/standard.api.json
+bindings: swap.scail2/bindings.yaml
+licence:
+  weights: MIT
+  code: Apache-2.0
+  commercial: true
+constraints:
+  dim_multiple: 32
+  window: 81
+  overlap: 5
+  preferred_height: 704
+  max_people: 4
+models:
+- scail2_nvfp4@draft
+- scail2_nvfp4@standard
+- scail2_fp16@max
+- scail2_relight
+- scail2_dpo
+- lightx2v_i2v_480p
+- umt5_xxl_fp8
+- wan21_vae_bf16
+- clip_vision_h
+- sam31
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: euler
+  scheduler: simple
+  shift: 5.0
+  relight_lora: wan2.1_SCAIL_2_relight_lora_bf16.safetensors
+  dpo_lora: wan2.1_SCAIL_2_DPO_lora_bf16.safetensors
+  speed_lora: lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+  unet: wan2.1_14B_SCAIL_2_nvfp4_mxpf8_mix.safetensors
+  track_text: person
+  max_people: 4
+profiles:
+  max:
+    unet: wan2.1_14B_SCAIL_2_fp16.safetensors
+    speed_lora:
+    steps: 40
+    cfg: 5.0

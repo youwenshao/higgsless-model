@@ -7,6 +7,7 @@ import typer
 
 def register(app: typer.Typer) -> None:
     from higgsless.cli.commands import (
+        analysis_cmd,
         bench_cmd,
         config_cmd,
         doctor_cmd,
@@ -22,6 +23,8 @@ def register(app: typer.Typer) -> None:
     app.command("ingest")(project_cmd.ingest)
     app.command("validate")(project_cmd.validate)
     app.add_typer(shots_cmd.app, name="shots")
+    app.command("analyze")(analysis_cmd.analyze)
+    app.add_typer(analysis_cmd.cast_app, name="cast")
     app.command("doctor")(doctor_cmd.doctor)
     app.add_typer(config_cmd.app, name="config")
     app.add_typer(engines_cmd.app, name="engines")

@@ -1,0 +1,17 @@
+id: separate.roformer
+title: RoFormer stem separation (vocals, lead/backing, dereverb)
+capability: separate
+backend: docker
+default: true
+image: tools
+task: separate
+licence:
+  weights: MIT / GPL-3.0 (dereverb)
+  code: MIT
+  commercial: true
+  notes: Kim FT2 and becruily models declare no licence; anvuew dereverb is GPL-3.0
+models: []
+defaults:
+  vocals_model: mel_band_roformer_kim_ft2_bleedless_unwa.ckpt
+  karaoke_model: mel_band_roformer_karaoke_becruily.ckpt
+  dereverb_model: dereverb_mel_band_roformer_anvuew_sdr_19.1729.ckpt

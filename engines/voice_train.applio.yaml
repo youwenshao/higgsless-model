@@ -1,0 +1,17 @@
+id: voice_train.applio
+title: Applio RVC training (10+ minutes of clean singing)
+capability: voice_train
+backend: docker
+default: true
+image: applio
+task: applio
+licence:
+  weights: MIT
+  code: MIT
+  commercial: true
+models: []
+defaults:
+  action: train
+  sample_rate: 48000
+  total_epoch: 300
+  batch_size: 8

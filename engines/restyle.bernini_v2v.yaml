@@ -1,0 +1,29 @@
+id: restyle.bernini_v2v
+title: Bernini-R video-to-video restyle
+capability: restyle
+backend: comfyui
+default: true
+workflow: restyle.bernini_v2v/standard.api.json
+bindings: restyle.bernini_v2v/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+constraints:
+  dim_multiple: 16
+  window: 121
+  overlap: 0
+models:
+- bernini_high_int8
+- bernini_low_int8
+- lightx2v_t2v_v2
+- umt5_xxl_fp8
+- wan21_vae_bf16
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: res_multistep
+  scheduler: simple
+  split_step: 3
+  speed_lora_high: lightx2v_T2V_14B_cfg_step_distill_v2_lora_rank64_bf16.safetensors
+  speed_lora_low: lightx2v_T2V_14B_cfg_step_distill_v2_lora_rank64_bf16.safetensors

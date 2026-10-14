@@ -1,0 +1,17 @@
+id: voice.voxcpm2_design
+title: VoxCPM2 voice design (an invented voice from a description)
+capability: voice
+backend: docker
+default: true
+image: voxcpm
+task: voxcpm
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+models:
+- voxcpm2
+defaults:
+  action: design
+  cfg_value: 2.0
+  steps: 10

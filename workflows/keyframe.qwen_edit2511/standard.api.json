@@ -1,0 +1,284 @@
+{
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "qwen_image_edit_2511_int8_convrot.safetensors",
+   "weight_dtype": "default"
+  },
+  "_meta": {
+   "title": "Diffusion Model"
+  }
+ },
+ "2": {
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ],
+   "shift": 3.1
+  },
+  "_meta": {
+   "title": "Model Sampling"
+  }
+ },
+ "3": {
+  "class_type": "CFGNorm",
+  "inputs": {
+   "model": [
+    "2",
+    0
+   ],
+   "strength": 1.0
+  },
+  "_meta": {
+   "title": "CFG Norm"
+  }
+ },
+ "4": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "model": [
+    "3",
+    0
+   ],
+   "lora_name": "Qwen-Edit-2509-Multiple-angles.safetensors",
+   "strength_model": 1.0
+  },
+  "_meta": {
+   "title": "Angle LoRA"
+  }
+ },
+ "5": {
+  "class_type": "LoraLoaderModelOnly",
+  "inputs": {
+   "model": [
+    "4",
+    0
+   ],
+   "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+   "strength_model": 1.0
+  },
+  "_meta": {
+   "title": "Lightning LoRA"
+  }
+ },
+ "6": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+   "type": "qwen_image",
+   "device": "default"
+  },
+  "_meta": {
+   "title": "Text Encoder"
+  }
+ },
+ "7": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "qwen_image_vae.safetensors"
+  },
+  "_meta": {
+   "title": "VAE"
+  }
+ },
+ "8": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "placeholder.png"
+  },
+  "_meta": {
+   "title": "Base Image"
+  }
+ },
+ "9": {
+  "class_type": "FluxKontextImageScale",
+  "inputs": {
+   "image": [
+    "8",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Scale Base"
+  }
+ },
+ "10": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "placeholder.png"
+  },
+  "_meta": {
+   "title": "Reference 2"
+  }
+ },
+ "11": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "placeholder.png"
+  },
+  "_meta": {
+   "title": "Reference 3"
+  }
+ },
+ "12": {
+  "class_type": "TextEncodeQwenImageEditPlus",
+  "inputs": {
+   "clip": [
+    "6",
+    0
+   ],
+   "prompt": "",
+   "vae": [
+    "7",
+    0
+   ],
+   "image1": [
+    "9",
+    0
+   ],
+   "image2": [
+    "10",
+    0
+   ],
+   "image3": [
+    "11",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Positive"
+  }
+ },
+ "13": {
+  "class_type": "TextEncodeQwenImageEditPlus",
+  "inputs": {
+   "clip": [
+    "6",
+    0
+   ],
+   "prompt": "",
+   "vae": [
+    "7",
+    0
+   ],
+   "image1": [
+    "9",
+    0
+   ],
+   "image2": [
+    "10",
+    0
+   ],
+   "image3": [
+    "11",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Negative"
+  }
+ },
+ "14": {
+  "class_type": "FluxKontextMultiReferenceLatentMethod",
+  "inputs": {
+   "conditioning": [
+    "12",
+    0
+   ],
+   "reference_latents_method": "index_timestep_zero"
+  },
+  "_meta": {
+   "title": "Positive Refs"
+  }
+ },
+ "15": {
+  "class_type": "FluxKontextMultiReferenceLatentMethod",
+  "inputs": {
+   "conditioning": [
+    "13",
+    0
+   ],
+   "reference_latents_method": "index_timestep_zero"
+  },
+  "_meta": {
+   "title": "Negative Refs"
+  }
+ },
+ "16": {
+  "class_type": "VAEEncode",
+  "inputs": {
+   "pixels": [
+    "9",
+    0
+   ],
+   "vae": [
+    "7",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Encode Base"
+  }
+ },
+ "17": {
+  "class_type": "KSampler",
+  "inputs": {
+   "model": [
+    "5",
+    0
+   ],
+   "seed": 0,
+   "steps": 4,
+   "cfg": 1.0,
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "positive": [
+    "14",
+    0
+   ],
+   "negative": [
+    "15",
+    0
+   ],
+   "latent_image": [
+    "16",
+    0
+   ],
+   "denoise": 1.0
+  },
+  "_meta": {
+   "title": "Sampler"
+  }
+ },
+ "18": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "17",
+    0
+   ],
+   "vae": [
+    "7",
+    0
+   ]
+  },
+  "_meta": {
+   "title": "Decode"
+  }
+ },
+ "19": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "18",
+    0
+   ],
+   "filename_prefix": "keyframe"
+  },
+  "_meta": {
+   "title": "Save Image"
+  }
+ }
+}

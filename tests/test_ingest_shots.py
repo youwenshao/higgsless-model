@@ -21,20 +21,58 @@ def make_video(path: Path) -> None:
         "[a][b][c]concat=n=3:v=1:a=0,format=yuv420p[v]"
     )
     subprocess.run(
-        ["ffmpeg", "-y", "-v", "error",
-         "-f", "lavfi", "-i", f"smptebars=s={size}:r={rate}",
-         "-f", "lavfi", "-i", f"testsrc2=s={size}:r={rate}",
-         "-f", "lavfi", "-i", f"color=c=0x228833:s={size}:r={rate}",
-         "-f", "lavfi", "-i", "sine=f=440:r=48000",
-         "-filter_complex", graph, "-map", "[v]", "-map", "3:a",
-         "-frames:v", "90", "-c:v", "libx264", "-crf", "18", "-c:a", "aac", "-shortest", str(path)],
+        [
+            "ffmpeg",
+            "-y",
+            "-v",
+            "error",
+            "-f",
+            "lavfi",
+            "-i",
+            f"smptebars=s={size}:r={rate}",
+            "-f",
+            "lavfi",
+            "-i",
+            f"testsrc2=s={size}:r={rate}",
+            "-f",
+            "lavfi",
+            "-i",
+            f"color=c=0x228833:s={size}:r={rate}",
+            "-f",
+            "lavfi",
+            "-i",
+            "sine=f=440:r=48000",
+            "-filter_complex",
+            graph,
+            "-map",
+            "[v]",
+            "-map",
+            "3:a",
+            "-frames:v",
+            "90",
+            "-c:v",
+            "libx264",
+            "-crf",
+            "18",
+            "-c:a",
+            "aac",
+            "-shortest",
+            str(path),
+        ],
         check=True,
     )
 
 
 def cli(*args: str) -> dict:
-    proc = subprocess.run([sys.executable, "-m", "higgsless", "--json", *args], capture_output=True, text=True,
-                          encoding="utf-8", cwd=REPO, env=os.environ.copy(), check=False)
+    proc = subprocess.run(
+        [sys.executable, "-m", "higgsless", "--json", *args],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        cwd=REPO,
+        env=os.environ.copy(),
+        check=False,
+    )
     assert proc.stdout.strip(), proc.stderr
     data = json.loads(proc.stdout)
     assert data["ok"], json.dumps(data, indent=1) + proc.stderr
@@ -55,8 +93,23 @@ def test_init_ingest_detect(tmp_path, projects_home, local_config):
 
     data_root = Path(local_config.read_text().split("data_root: '")[1].split("'")[0])
     mezz = data_root / "projects" / "demo" / "shots" / "s002" / "mezz.mp4"
-    out = subprocess.run(["ffprobe", "-v", "error", "-count_packets", "-select_streams", "v:0", "-show_entries",
-                          "stream=nb_read_packets", "-of", "csv=p=0", str(mezz)], capture_output=True, text=True)
+    out = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-count_packets",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=nb_read_packets",
+            "-of",
+            "csv=p=0",
+            str(mezz),
+        ],
+        capture_output=True,
+        text=True,
+    )
     assert out.stdout.strip() == "36"
 
     split = cli("-p", "demo", "shots", "split", "s002", "--at", "40")

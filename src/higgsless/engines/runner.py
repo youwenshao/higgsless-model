@@ -150,6 +150,14 @@ class JobRunner:
         prompt_id, entry = self.comfy.run(bound.workflow, on_progress, timeout_s=spec.timeout_s)
         by_node = {node_id: name for name, node_id in bound.outputs.items()}
         outputs: dict[str, list[str]] = {name: [] for name in bound.outputs}
+        for name, out in bindings.outputs.items():
+            if out.kind != "text":
+                continue
+            texts = ((entry.get("outputs") or {}).get(bound.outputs[name]) or {}).get("text") or []
+            for i, text in enumerate(texts):
+                path = remote_join(spec.output_dir, f"{name}{'' if i == 0 else f'_{i}'}.txt")
+                self.executor.write_text(path, str(text))
+                outputs[name].append(path)
         for f in self.comfy.output_files(entry):
             name = by_node.get(f.node_id)
             if name is None or f.type != "output":

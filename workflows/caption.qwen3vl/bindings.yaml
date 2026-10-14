@@ -1,0 +1,17 @@
+params:
+  image:
+    target: Image.image
+    type: input_path
+    required: true
+  prompt:
+    target: Generate Text.prompt
+    type: str
+    required: true
+  max_length:
+    target: Generate Text.max_length
+    type: int
+outputs:
+  text:
+    node: Text Output
+    prefix_input:
+    kind: text

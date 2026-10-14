@@ -1,0 +1,12 @@
+params:
+  video:
+    target: Video.file
+    type: input_path
+    required: true
+  multiplier:
+    target: Interpolate.multiplier
+    type: int
+    required: true
+outputs:
+  frames:
+    node: Save Frames

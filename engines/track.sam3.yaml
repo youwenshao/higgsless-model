@@ -1,0 +1,19 @@
+id: track.sam3
+title: SAM 3.1 person tracking (colored identity masks)
+capability: track
+backend: comfyui
+default: true
+workflow: track.sam3/standard.api.json
+bindings: track.sam3/bindings.yaml
+licence:
+  weights: SAM License
+  code: Apache-2.0
+  commercial: true
+  notes: 'Meta SAM License: commercial use allowed with its use restrictions'
+models:
+- sam31
+defaults:
+  text: person
+  threshold: 0.5
+  max_objects: 8
+  detect_interval: 1

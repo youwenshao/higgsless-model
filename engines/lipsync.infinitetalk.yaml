@@ -1,0 +1,31 @@
+id: lipsync.infinitetalk
+title: InfiniteTalk audio-driven re-render (stylised close-ups)
+capability: lipsync
+backend: comfyui
+description: 'Regenerates the shot from its first frame driven by the vocal: use on close-ups, not dance shots.'
+workflow: lipsync.infinitetalk/standard.api.json
+bindings: lipsync.infinitetalk/bindings.yaml
+licence:
+  weights: Apache-2.0
+  code: Apache-2.0
+  commercial: true
+constraints:
+  dim_multiple: 16
+  window: 81
+  overlap: 9
+models:
+- wan21_i2v_480p_fp8
+- infinitetalk_single
+- wav2vec2_chinese_base
+- lightx2v_i2v_480p
+- umt5_xxl_fp8
+- wan21_vae_bf16
+- clip_vision_h
+defaults:
+  steps: 6
+  cfg: 1.0
+  sampler: lcm
+  scheduler: simple
+  audio_scale: 1.0
+  speed_lora: lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+  prompt: a person singing to camera
