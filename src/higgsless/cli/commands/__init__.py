@@ -12,10 +12,16 @@ def register(app: typer.Typer) -> None:
         doctor_cmd,
         engines_cmd,
         models_cmd,
+        project_cmd,
+        shots_cmd,
         worker_cmd,
         workflows_cmd,
     )
 
+    app.command("init")(project_cmd.init)
+    app.command("ingest")(project_cmd.ingest)
+    app.command("validate")(project_cmd.validate)
+    app.add_typer(shots_cmd.app, name="shots")
     app.command("doctor")(doctor_cmd.doctor)
     app.add_typer(config_cmd.app, name="config")
     app.add_typer(engines_cmd.app, name="engines")
