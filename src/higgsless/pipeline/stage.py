@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -44,10 +43,13 @@ class Stage:
 
     def input_rel(self, path: str) -> str:
         """Remote absolute path -> path relative to ComfyUI's input directory (the data root)."""
-        root = self.cfg.data_root.rstrip("/\\")
-        if not path.startswith(root):
+        root = self.cfg.data_root.replace("\\", "/").rstrip("/")
+        norm = str(path).replace("\\", "/")
+        windows = len(root) > 1 and root[1] == ":"
+        prefix_ok = (norm.lower() if windows else norm).startswith((root.lower() if windows else root) + "/")
+        if not prefix_ok:
             raise ConfigError(f"{path} is outside the data root {root}")
-        return path[len(root) :].lstrip("/\\").replace("\\", "/")
+        return norm[len(root) + 1 :]
 
     def progress(self, message: str) -> None:
         self.app.out.progress(message)
@@ -72,7 +74,8 @@ class Stage:
         runner = ToolRunner(self.cfg, self.ex, self.app.comfy if gpu else None)
         return runner.run_task(
             name,
-            ["--output-dir", output_dir, "--params", json.dumps(params, ensure_ascii=False)],
+            ["--output-dir", output_dir],
+            params=params,
             gpu=gpu,
             image=image,
             timeout=timeout,

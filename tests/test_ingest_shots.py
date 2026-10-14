@@ -117,3 +117,34 @@ def test_init_ingest_detect(tmp_path, projects_home, local_config):
     merged = cli("-p", "demo", "shots", "merge", "s002", "s002b")
     assert merged["shot"] == "s002"
     assert [s["frames"] for s in cli("-p", "demo", "shots", "list")][1] == [24, 60]
+
+    # A dissolve on s003, then a passthrough conform: exact frame count, duration, audio and OTIO.
+    cli("-p", "demo", "shots", "set", "s003", "--mode", "passthrough")
+    manifest = projects_home / "demo" / "project.yaml"
+    manifest.write_text(
+        manifest.read_text(encoding="utf-8").replace("id: s003", "id: s003\n    transition: dissolve:6", 1),
+        encoding="utf-8",
+    )
+    result = cli("-p", "demo", "conform", "--resolution", "720p", "--pull")
+    assert result["frames"] == 90 and result["width"] == 960 and result["height"] == 720
+    assert abs(result["duration_s"] - 90 * 1001 / 24000) < 1e-6
+    final = Path(result["local_video"])
+    streams = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-count_packets",
+            "-show_entries",
+            "stream=codec_type,nb_read_packets",
+            "-of",
+            "json",
+            str(final),
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    kinds = {s["codec_type"]: s for s in json.loads(streams.stdout)["streams"]}
+    assert kinds["video"]["nb_read_packets"] == "90" and "audio" in kinds
+    assert Path(result["local_otio"]).read_text(encoding="utf-8").count('"OTIO_SCHEMA": "Clip') == 3

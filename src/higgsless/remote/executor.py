@@ -151,7 +151,7 @@ class LocalExecutor(Executor):
             else:
                 result = self._stream(argv, cwd, full_env, timeout, on_line, start)
         except FileNotFoundError as exc:
-            raise JobFailed(f"executable not found: {argv[0]}") from exc
+            raise JobFailed(f"could not start {argv[0]}: {exc}") from exc
         except subprocess.TimeoutExpired as exc:
             raise JobFailed(f"command timed out after {timeout}s: {shlex.join(argv)[:300]}") from exc
         if check and not result.ok:

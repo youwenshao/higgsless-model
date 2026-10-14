@@ -94,9 +94,20 @@ class ToolRunner:
         env: dict[str, str] | None = None,
         timeout: float | None = None,
         on_line: LineCallback | None = None,
+        params: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        result_path = remote_join(self.cfg.data_root, "_tmp", f"{task}-{uuid.uuid4().hex[:12]}.json")
+        token = uuid.uuid4().hex[:12]
+        result_path = remote_join(self.cfg.data_root, "_tmp", f"{task}-{token}.json")
         self.executor.makedirs(remote_join(self.cfg.data_root, "_tmp"))
+        params_path = None
+        if params is not None:
+            payload = json.dumps(params, ensure_ascii=False)
+            if len(payload) > 4000:  # command lines are limited (Windows 32 KB, Linux 128 KB per argument)
+                params_path = remote_join(self.cfg.data_root, "_tmp", f"{task}-{token}.params.json")
+                self.executor.write_text(params_path, payload)
+                args = [*args, "--params-file", params_path]
+            else:
+                args = [*args, "--params", payload]
         cmd = [self._python(image), "-m", f"higgsless.worker_tasks.{task}", "--result", result_path, *args]
         self._prepare_gpu(gpu)
         self.executor.run(
@@ -111,6 +122,8 @@ class ToolRunner:
             raise JobFailed(f"worker task {task} wrote no result") from exc
         finally:
             self.executor.remove(result_path)
+            if params_path:
+                self.executor.remove(params_path)
         if not data.get("ok", True):
             raise JobFailed(f"worker task {task} failed: {data.get('error')}", details=data)
         return data

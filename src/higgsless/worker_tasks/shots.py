@@ -17,7 +17,7 @@ def scenedetect_cuts(path: str, adaptive: float, content: float, min_len: int) -
     manager.add_detector(AdaptiveDetector(adaptive_threshold=adaptive, min_scene_len=min_len))
     manager.add_detector(ContentDetector(threshold=content, min_scene_len=min_len))
     manager.detect_scenes(video)
-    cuts = sorted({scene[0].get_frames() for scene in manager.get_scene_list()[1:]})
+    cuts = sorted({_frame(scene[0]) for scene in manager.get_scene_list()[1:]})
 
     # Fades to/from black become transitions rather than ordinary cuts.
     fades: list[dict] = []
@@ -26,8 +26,14 @@ def scenedetect_cuts(path: str, adaptive: float, content: float, min_len: int) -
     fade_mgr.add_detector(ThresholdDetector(threshold=12, min_scene_len=min_len, fade_bias=0.0))
     fade_mgr.detect_scenes(video)
     for scene in fade_mgr.get_scene_list()[1:]:
-        fades.append({"frame": scene[0].get_frames(), "kind": "fade"})
+        fades.append({"frame": _frame(scene[0]), "kind": "fade"})
     return cuts, fades
+
+
+def _frame(timecode: Any) -> int:
+    """PySceneDetect 0.7 exposes `frame_num`; 0.6 only has get_frames()."""
+    value = getattr(timecode, "frame_num", None)
+    return int(value) if value is not None else int(timecode.get_frames())
 
 
 def transnet_cuts(path: str, threshold: float = 0.5) -> tuple[list[int], list[dict]] | None:

@@ -37,8 +37,7 @@ def bench(
     synth_dir = remote_join(cfg.data_root, "_bench", "inputs")
     tools = ToolRunner(cfg, app_ctx.executor, app_ctx.comfy)
     media = tools.run_task(
-        "synth",
-        ["--output-dir", synth_dir, "--params", json.dumps({"width": width, "height": height, "frames": length})],
+        "synth", ["--output-dir", synth_dir], params={"width": width, "height": height, "frames": length}
     )
     _, bindings = load_workflow(engine)
     rel_ref = media["outputs"]["reference_image"][0][len(cfg.data_root) :].lstrip("/\\").replace("\\", "/")

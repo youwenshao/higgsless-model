@@ -47,21 +47,26 @@ def analysis_clip(stage: Stage, shot: Shot) -> str:
     return path
 
 
-def track(stage: Stage, shot: Shot, *, max_people: int = 8, force: bool = False) -> str:
-    """SAM 3.1 person tracking rendered as colored identity masks (one PNG per frame)."""
+def track_clip(stage: Stage, clip: str, out_dir: str, label: str, *, max_people: int = 8, force: bool = False) -> str:
+    """SAM 3.1 person tracking of any clip, rendered as colored identity masks (one PNG per frame)."""
     engine, _ = registry().resolve("track", stage.project)
-    clip = analysis_clip(stage, shot)
-    out_dir = stage.join(stage.shot_dir(shot.id), "track")
     params = engine.params_for(
-        stage.project.profile.value,
-        {
-            "video": stage.input_rel(clip),
-            "text": "person",
-            "max_objects": max_people,
-        },
+        stage.project.profile.value, {"video": stage.input_rel(clip), "text": "person", "max_objects": max_people}
     )
-    record = _runner(stage).run(JobSpec(engine, params, out_dir, f"track {shot.id}"), force=force)
-    return stage.join(out_dir, "masks") if record["outputs"].get("masks") else out_dir
+    _runner(stage).run(JobSpec(engine, params, out_dir, label), force=force)
+    return out_dir  # SaveImage writes masks_00001_.png ... directly into the job folder
+
+
+def track(stage: Stage, shot: Shot, *, max_people: int = 8, force: bool = False) -> str:
+    clip = analysis_clip(stage, shot)
+    return track_clip(
+        stage,
+        clip,
+        stage.join(stage.shot_dir(shot.id), "track"),
+        f"track {shot.id}",
+        max_people=max_people,
+        force=force,
+    )
 
 
 def caption(stage: Stage, shot: Shot, image_path: str, prompt: str, *, label: str, force: bool = False) -> str:

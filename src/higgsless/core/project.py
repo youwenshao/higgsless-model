@@ -35,6 +35,10 @@ usage: {usage}
 # original (keep sets, swap performers) | new-world (rebuild shots) | restyle (needs `style`)
 look: {look}
 style: null
+# New setting for rebuilt shots, e.g. "a neon-lit rooftop at night"; null keeps the original set.
+world: null
+# Language of the two-part captions Wan-Animate-2 is prompted with: en | zh
+caption_language: en
 # draft (480p, fast) | standard (720p) | max (720p, slow, best)
 profile: {profile}
 takes: 1

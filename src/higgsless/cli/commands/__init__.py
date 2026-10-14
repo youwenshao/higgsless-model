@@ -12,8 +12,10 @@ def register(app: typer.Typer) -> None:
         config_cmd,
         doctor_cmd,
         engines_cmd,
+        images_cmd,
         models_cmd,
         project_cmd,
+        render_cmd,
         shots_cmd,
         worker_cmd,
         workflows_cmd,
@@ -25,6 +27,12 @@ def register(app: typer.Typer) -> None:
     app.add_typer(shots_cmd.app, name="shots")
     app.command("analyze")(analysis_cmd.analyze)
     app.add_typer(analysis_cmd.cast_app, name="cast")
+    app.add_typer(images_cmd.char_app, name="char")
+    app.add_typer(images_cmd.keyframe_app, name="keyframe")
+    app.command("render")(render_cmd.render)
+    app.command("review")(render_cmd.review)
+    app.command("pick")(render_cmd.pick)
+    app.command("conform")(render_cmd.conform)
     app.command("doctor")(doctor_cmd.doctor)
     app.add_typer(config_cmd.app, name="config")
     app.add_typer(engines_cmd.app, name="engines")

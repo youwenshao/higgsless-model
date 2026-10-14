@@ -71,5 +71,6 @@ def get_ctx(ctx: typer.Context) -> AppContext:
     obj = ctx.find_root().obj
     if not isinstance(obj, AppContext):  # pragma: no cover - set by the root callback
         raise RuntimeError("root callback did not run")
-    obj.out.command = ctx.command_path.removeprefix("higgsless").strip()
+    path = ctx.command_path
+    obj.out.command = path.split("higgsless", 1)[1].strip() if "higgsless" in path else path
     return obj

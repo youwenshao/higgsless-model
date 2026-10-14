@@ -188,6 +188,8 @@ class Project(_Strict):
     usage: Usage = Usage.PUBLIC_NONCOMMERCIAL
     look: Look = Look.NEW_WORLD
     style: str | None = Field(None, description="Restyle prompt when look is restyle")
+    world: str | None = Field(None, description="New setting for rebuilt shots (new-world look); null keeps the set")
+    caption_language: Literal["en", "zh"] = Field("en", description="Language of Wan-Animate-2 two-part captions")
     profile: Profile = Profile.STANDARD
     render_resolution: Literal["480p", "576p", "720p"] | None = None
     takes: int = 1

@@ -20,11 +20,13 @@ def run_task(fn: TaskFn) -> None:
     parser.add_argument("--result", required=True)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--params", default="{}")
+    parser.add_argument("--params-file", help="JSON file with the params (for large payloads)")
     args = parser.parse_args()
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     try:
-        result = fn(json.loads(args.params), out_dir) or {}
+        raw = Path(args.params_file).read_text(encoding="utf-8") if args.params_file else args.params
+        result = fn(json.loads(raw), out_dir) or {}
         result.setdefault("ok", True)
     except Exception as exc:  # noqa: BLE001 - reported through the result file
         result = {"ok": False, "error": f"{type(exc).__name__}: {exc}", "traceback": traceback.format_exc()[-4000:]}

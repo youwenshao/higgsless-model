@@ -171,11 +171,11 @@ class JobRunner:
 
     def _run_task(self, spec: JobSpec) -> tuple[dict[str, list[str]], dict[str, Any]]:
         assert spec.engine.task and spec.engine.image
-        args = ["--output-dir", spec.output_dir, "--params", json.dumps(spec.params, ensure_ascii=False)]
         self.progress(f"{spec.label}: running {spec.engine.id} on the workstation")
         data = self.tools.run_task(
             spec.engine.task,
-            args,
+            ["--output-dir", spec.output_dir],
+            params=spec.params,
             gpu=spec.engine.gpu,
             image=spec.engine.image,
             timeout=spec.timeout_s,
