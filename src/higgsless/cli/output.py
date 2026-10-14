@@ -5,7 +5,6 @@ Progress always goes to stderr so stdout stays parseable for agents.
 
 from __future__ import annotations
 
-import json
 import sys
 from dataclasses import dataclass, field
 from typing import Any
@@ -13,21 +12,8 @@ from typing import Any
 from rich.console import Console
 from rich.table import Table
 
+from higgsless.core.jsonio import to_json
 from higgsless.errors import HiggslessError
-
-
-def _default(obj: Any) -> Any:
-    if hasattr(obj, "model_dump"):
-        return obj.model_dump(mode="json")
-    if hasattr(obj, "__fspath__"):
-        return str(obj)
-    if isinstance(obj, set | frozenset):
-        return sorted(obj)
-    raise TypeError(f"not JSON serialisable: {type(obj).__name__}")
-
-
-def to_json(data: Any) -> str:
-    return json.dumps(data, default=_default, ensure_ascii=False, indent=2)
 
 
 @dataclass

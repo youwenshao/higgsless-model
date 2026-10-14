@@ -8,8 +8,10 @@ dist/
 build/
 *.egg-info/
 
-# Local configuration (copy config/workstation.example.yaml)
+# Local configuration (copy config/workstation.example.yaml) and per-machine benchmarks
 config/workstation.yaml
+config/bench.json
+config/bench-state/
 
 # Projects hold media, previews and per-project state; version them separately if you like.
 projects/*

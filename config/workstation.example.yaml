@@ -1,0 +1,29 @@
+# Copy to config/workstation.yaml (gitignored) and adjust.
+executor: ssh # ssh | local (local = the CLI runs on the workstation itself)
+ssh:
+  host: workstation # Tailscale name, IP, or ~/.ssh/config alias
+  user: null
+  port: 22
+  key_path: null # e.g. ~/.ssh/id_ed25519; null uses your agent / default keys
+  known_hosts: default # default | ignore
+comfy:
+  url: http://workstation:8188 # ComfyUI is bound to the Tailscale address
+  timeout_s: 21600
+  poll_s: 2.0
+data_root: /srv/higgsless # ComfyUI --input-directory and --output-directory point here
+comfy_root: /opt/comfyui
+comfy_python: /opt/comfyui/.venv/bin/python
+hf_cache: /srv/higgsless/_hf
+worker_dir: /srv/higgsless/_worker
+tools_mode: docker # docker | native
+native_python: python3
+docker:
+  gpus: all
+  user: null # uid:gid for containers; queried over SSH when null
+  extra_args: []
+  images:
+    tools: higgsless/tools:latest
+    soulx: higgsless/soulx:latest
+    applio: higgsless/applio:latest
+    voxcpm: higgsless/voxcpm:latest
+    acestep: higgsless/acestep:latest
