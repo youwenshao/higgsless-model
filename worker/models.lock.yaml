@@ -1,0 +1,364 @@
+# Model files per engine. Sizes and sha256 come from the Hugging Face API (2026-10-14).
+# dest: ComfyUI models subfolder, or "hf" for a snapshot in the shared Hugging Face cache (tool containers).
+# Engines reference these ids; "<id>@<profile>" limits a file to one quality profile.
+models:
+  # --- Wan-Animate-2 (Apache-2.0) -------------------------------------------------------------
+  wan_animate2_int8:
+    repo: Comfy-Org/Wan-Animate-2
+    file: diffusion_models/wan_animate_2_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 16653175528
+    sha256: 0580ecdd65e47e97c30df9670d13a6c4a131d26de5a1faf2ccc78392d5167584
+    licence: Apache-2.0
+  wan_animate2_bf16:
+    repo: Comfy-Org/Wan-Animate-2
+    file: diffusion_models/wan_animate_2_bf16.safetensors
+    dest: diffusion_models
+    size: 32789894104
+    sha256: 642e906c7deaa27072a90ea433319b18f274da438ba75e350373467a0421f177
+    licence: Apache-2.0
+  wan_animate2_distill_int8:
+    repo: Comfy-Org/Wan-Animate-2
+    file: diffusion_models/wan_animate_2_distill_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 16653175528
+    sha256: d2e566ecac3f164cb1a6b63dc7d868d6678c9affa49fbceb3abe4f9458f89c8a
+    licence: Apache-2.0
+  lightx2v_i2v_480p:
+    repo: Comfy-Org/Wan-Animate-2
+    file: loras/lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+    dest: loras
+    size: 738005744
+    sha256: 85c4a61c30e0497aa44b91d93a893b624708461a56fe5485183b28fa07e2dfb3
+    licence: Apache-2.0
+  umt5_xxl_fp8:
+    repo: Comfy-Org/Wan-Animate-2
+    file: text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
+    dest: text_encoders
+    size: 6735906897
+    sha256: c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68
+    licence: Apache-2.0
+  umt5_xxl_fp16:
+    repo: Comfy-Org/Wan-Animate-2
+    file: text_encoders/umt5_xxl_fp16.safetensors
+    dest: text_encoders
+    size: 11366399385
+    sha256: 7b8850f1961e1cf8a77cca4c964a358d303f490833c6c087d0cff4b2f99db2af
+    licence: Apache-2.0
+  wan21_vae_bf16:
+    repo: Comfy-Org/Wan-Animate-2
+    file: vae/Wan2_1_VAE_bf16.safetensors
+    dest: vae
+    size: 253806278
+    sha256: 1ab9a32cc2c740f6e39d80d367ce5dcc28db8c71b79b28670546b8973e9d75f9
+    licence: Apache-2.0
+  clip_vision_h:
+    repo: Comfy-Org/Wan-Animate-2
+    file: clip_vision/clip_vision_h.safetensors
+    dest: clip_vision
+    size: 1264219396
+    sha256: 64a7ef761bfccbadbaa3da77366aac4185a6c58fa5de5f589b42a65bcc21f161
+    licence: MIT
+
+  # --- Wan2.2-Animate v1, Mix mode (Apache-2.0) -----------------------------------------------
+  wan22_animate_int8:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/diffusion_models/wan2.2_animate_14B_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 18413068672
+    sha256: 419aa0b3d9079a8a39126f2894c3cb2427c288189d2dc8342c61cf0663731cb3
+    licence: Apache-2.0
+  wan22_animate_bf16:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/diffusion_models/wan2.2_animate_14B_bf16.safetensors
+    dest: diffusion_models
+    size: 34549787368
+    sha256: 7d37cb0120488dec2a061135aa3018426925318a60838c3de935c829abc88667
+    licence: Apache-2.0
+  wan22_animate_relight:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/loras/wan2.2_animate_14B_relight_lora_bf16.safetensors
+    dest: loras
+    size: 1436673432
+    sha256: 5f4b6b9d3bc745a86e7bfd511f3880d90cf59c3bded9584d92c028f583fa74a3
+    licence: Apache-2.0
+  wan21_vae:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/vae/wan_2.1_vae.safetensors
+    dest: vae
+    size: 253815318
+    sha256: 2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b
+    licence: Apache-2.0
+
+  # --- SCAIL-2 (weights MIT, code Apache-2.0) -------------------------------------------------
+  scail2_nvfp4:
+    repo: Comfy-Org/SCAIL-2
+    file: diffusion_models/wan2.1_14B_SCAIL_2_nvfp4_mxpf8_mix.safetensors
+    dest: diffusion_models
+    size: 11023570536
+    sha256: 5053562142b46a12ef368360373304609ce6e6e010b3fddd35ef1cd27e180e7d
+    licence: MIT
+  scail2_int8:
+    repo: Comfy-Org/SCAIL-2
+    file: diffusion_models/wan2.1_14B_SCAIL_2_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 16654506256
+    sha256: a2114c18a811243185f103765cd5004b61652141aa55a9016d3bdceebceb5ac0
+    licence: MIT
+  scail2_fp16:
+    repo: Comfy-Org/SCAIL-2
+    file: diffusion_models/wan2.1_14B_SCAIL_2_fp16.safetensors
+    dest: diffusion_models
+    size: 32794040328
+    sha256: e3f9cd52184949ee8ffdc01ba14de4c619e0ddfa09ae105cb7efce5c8dc9fe43
+    licence: MIT
+  scail2_relight:
+    repo: Comfy-Org/SCAIL-2
+    file: loras/wan2.1_SCAIL_2_relight_lora_bf16.safetensors
+    dest: loras
+    size: 1226936552
+    sha256: 538056c306179bb82e88f8e965609e7ebf99fbf2caa8b9e49db6a718974c3d7b
+    licence: MIT
+  scail2_dpo:
+    repo: Comfy-Org/SCAIL-2
+    file: loras/wan2.1_SCAIL_2_DPO_lora_bf16.safetensors
+    dest: loras
+    size: 1226936552
+    sha256: b106522036f64e50f5f8ae3b808973515ff442cc2fac27b65d875eafb95b89e2
+    licence: MIT
+
+  # --- Bernini-R (Apache-2.0) -----------------------------------------------------------------
+  bernini_high_int8:
+    repo: Comfy-Org/Bernini-R
+    file: diffusion_models/wan2.2_bernini_r_high_noise_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 14535868680
+    sha256: 9d9a84f6e70032bd8f1dab40f5b0270fefd259ac5111a52b4acb752773c119b3
+    licence: Apache-2.0
+  bernini_low_int8:
+    repo: Comfy-Org/Bernini-R
+    file: diffusion_models/wan2.2_bernini_r_low_noise_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 14535868680
+    sha256: 98fe00c6e38a745929cd7770a84ae3814c834d2ed7bef6b8a0a526c896fe8e5c
+    licence: Apache-2.0
+  bernini_high_fp16:
+    repo: Comfy-Org/Bernini-R
+    file: diffusion_models/wan2.2_bernini_r_high_noise_fp16.safetensors
+    dest: diffusion_models
+    size: 28577761232
+    sha256: ee77e2e80bfbaadb8ab5ceb379863eb07d7534067187eba06cc395abe18799e3
+    licence: Apache-2.0
+  bernini_low_fp16:
+    repo: Comfy-Org/Bernini-R
+    file: diffusion_models/wan2.2_bernini_r_low_noise_fp16.safetensors
+    dest: diffusion_models
+    size: 28577761232
+    sha256: 3c5f17f2f6024ee96942cb03351fd9d365383a83eb5974739dc5ca7f2cb0e3bb
+    licence: Apache-2.0
+
+  # --- Wan2.2-VACE-Fun and Wan2.2 S2V (Apache-2.0) --------------------------------------------
+  vace_fun_high_fp8:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/diffusion_models/wan2.2_fun_vace_high_noise_14B_fp8_scaled.safetensors
+    dest: diffusion_models
+    size: 17346056104
+    sha256: 23130f30207f6c8697a5bead113ddc9904cfbb5e8fa51a550df3cee4d21fb54c
+    licence: Apache-2.0
+  vace_fun_low_fp8:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/diffusion_models/wan2.2_fun_vace_low_noise_14B_fp8_scaled.safetensors
+    dest: diffusion_models
+    size: 17346056104
+    sha256: ca55a5cc543e28576edbd2079f8c1de05f71cd9e85bf96fab635f55663dbcb69
+    licence: Apache-2.0
+  lightx2v_t2v_high:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors
+    dest: loras
+    size: 1226977424
+    sha256: 698321cb86bd30c4af06c9b84e656a1048c8cb54e06d50694536fb5de37fde41
+    licence: Apache-2.0
+  lightx2v_t2v_low:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/loras/wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors
+    dest: loras
+    size: 1226977424
+    sha256: ec95216e614b3c132c11bfb387b11feedf62163150ccc9068bca8a189771e75a
+    licence: Apache-2.0
+  wan22_s2v_fp8:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/diffusion_models/wan2.2_s2v_14B_fp8_scaled.safetensors
+    dest: diffusion_models
+    size: 16394832474
+    sha256: 140e75af5534ac3d91e710d9df756f7032addd64b341ba2c1c70e3e6da9aa216
+    licence: Apache-2.0
+  wav2vec2_large_english:
+    repo: Comfy-Org/Wan_2.2_ComfyUI_Repackaged
+    file: split_files/audio_encoders/wav2vec2_large_english_fp16.safetensors
+    dest: audio_encoders
+    size: 630997322
+    sha256: f0017a43ea57ef6b3d4866be607844bbd8cada6d30966f7d70044ed0d63d3f9e
+    licence: Apache-2.0
+
+  # --- InfiniteTalk on Wan2.1 I2V (Apache-2.0) ------------------------------------------------
+  infinitetalk_single:
+    repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
+    file: split_files/model_patches/wan2.1_infiniteTalk_single_fp16.safetensors
+    dest: model_patches
+    size: 5125258232
+    sha256: bf212c5c647eaf1c019b2158d2edf4a360d97e38b746c4bac994fee485e09fc3
+    licence: Apache-2.0
+  wan21_i2v_480p_fp8:
+    repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
+    file: split_files/diffusion_models/wan2.1_i2v_480p_14B_fp8_scaled.safetensors
+    dest: diffusion_models
+    size: 16401356938
+    sha256: b2de21b99b2e72cb0ff15253b07e926f26e7cf1b7e229efc32f94ad1f1ed9395
+    licence: Apache-2.0
+  wan21_i2v_720p_fp8:
+    repo: Comfy-Org/Wan_2.1_ComfyUI_repackaged
+    file: split_files/diffusion_models/wan2.1_i2v_720p_14B_fp8_scaled.safetensors
+    dest: diffusion_models
+    size: 16401356938
+    sha256: 6d7a34b63b70eb608324e546d979167a5e787ac6bca3528e63f54a11572d66aa
+    licence: Apache-2.0
+
+  # --- SAM 3.1 tracking and MediaPipe face landmarks ------------------------------------------
+  sam31:
+    repo: Comfy-Org/sam3.1
+    file: checkpoints/sam3.1_multiplex_fp16.safetensors
+    dest: checkpoints
+    size: 1745546848
+    sha256: 9ba99c92703c2e8b4f47de2d34a539bb8e18923049e238b780d70dbe6368eb03
+    licence: SAM License
+  mediapipe_face:
+    repo: Comfy-Org/mediapipe
+    file: detection/mediapipe_face_fp32.safetensors
+    dest: detection
+    size: 5423900
+    sha256: a98c4806081d40eba35102a0f6dc0000c2e1388b72cf24e691703d0605bd888a
+    licence: Apache-2.0
+
+  # --- Qwen-Image 2.1, Qwen-Image-Edit-2511 and Qwen3-VL (Apache-2.0) -------------------------
+  qwen_image21_int8:
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: diffusion_models/qwen_image_2.1_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 7256783064
+    sha256: cb74113cb03faecd79611b01fd7fd642f0aa60d6f0b95086abee214d75eaa57d
+    licence: Apache-2.0
+  qwen_image21_bf16:
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: diffusion_models/qwen_image_2.1_bf16.safetensors
+    dest: diffusion_models
+    size: 14230280616
+    sha256: 89f4158d066cc33906a199fca85634f766892dd78f49b6698dabf187ac86c4bc
+    licence: Apache-2.0
+  qwen_image21_vae:
+    repo: Comfy-Org/Qwen-Image-2.1
+    file: vae/qwen_image_2.1_vae_bf16.safetensors
+    dest: vae
+    size: 675509688
+    sha256: bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9
+    licence: Apache-2.0
+  qwen3vl_8b_int8:
+    repo: Comfy-Org/Qwen3-VL
+    file: text_encoders/qwen3vl_8b_int8_convrot.safetensors
+    dest: text_encoders
+    size: 9350798360
+    sha256: 8bfd0f6e12abf2d2d697ecc888e5e90b0d6741d6708f05799f53afa560452e8f
+    licence: Apache-2.0
+  qwen_edit2511_int8:
+    repo: Comfy-Org/Qwen-Image-Edit_ComfyUI
+    file: split_files/diffusion_models/qwen_image_edit_2511_int8_convrot.safetensors
+    dest: diffusion_models
+    size: 20499083824
+    sha256: 11b5af5ac601821d73930c84846c9a158e67177356daf927ce1c8d10f3963829
+    licence: Apache-2.0
+  qwen_edit_multiangle:
+    repo: Comfy-Org/Qwen-Image-Edit_ComfyUI
+    file: split_files/loras/Qwen-Edit-2509-Multiple-angles.safetensors
+    dest: loras
+    size: 236117032
+    sha256: e0cea9508025a39e41f50da0e7d10fbd9db182d057c745136a42ef8829914c8f
+    licence: Apache-2.0
+  qwen25_vl_7b_fp8:
+    repo: Comfy-Org/Qwen-Image_ComfyUI
+    file: split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+    dest: text_encoders
+    size: 9384670680
+    sha256: cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4
+    licence: Apache-2.0
+  qwen_image_vae:
+    repo: Comfy-Org/Qwen-Image_ComfyUI
+    file: split_files/vae/qwen_image_vae.safetensors
+    dest: vae
+    size: 253806246
+    sha256: a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f
+    licence: Apache-2.0
+
+  # --- Finishing: SeedVR2 (Apache-2.0), RIFE (MIT), FILM (Apache-2.0) --------------------------
+  seedvr2_7b_nvfp4:
+    repo: Comfy-Org/SeedVR2
+    file: diffusion_models/seedvr2_7b_nvfp4.safetensors
+    dest: diffusion_models
+    size: 4759694792
+    sha256: cc4af1a7bd5377066496f393555478323e806fa21163bdbe3409451aface9b93
+    licence: Apache-2.0
+  seedvr2_7b_fp8:
+    repo: Comfy-Org/SeedVR2
+    file: diffusion_models/seedvr2_7b_fp8_e4m3fn.safetensors
+    dest: diffusion_models
+    size: 8240979248
+    sha256: 5065e77d647dd553d9090a81e20d6de590d931a61df79d785e008433926ee418
+    licence: Apache-2.0
+  seedvr2_3b_fp8:
+    repo: Comfy-Org/SeedVR2
+    file: diffusion_models/seedvr2_3b_fp8_e4m3fn.safetensors
+    dest: diffusion_models
+    size: 3392794232
+    sha256: a0226eaa2c3e6f47ae5ce83225120f16479da890ced1a3bc32b1a14619787914
+    licence: Apache-2.0
+  seedvr2_vae:
+    repo: Comfy-Org/SeedVR2
+    file: vae/seedvr2_ema_vae_fp16.safetensors
+    dest: vae
+    size: 501324814
+    sha256: 20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1
+    licence: Apache-2.0
+  rife_v426:
+    repo: Comfy-Org/frame_interpolation
+    file: frame_interpolation/rife_v4.26.safetensors
+    dest: frame_interpolation
+    size: 22674688
+    sha256: 151874592c877740e5db11522f4514df569eeafb0a0fcb2696f16e9e8d317c94
+    licence: MIT
+  film_net:
+    repo: Comfy-Org/frame_interpolation
+    file: frame_interpolation/film_net_fp16.safetensors
+    dest: frame_interpolation
+    size: 68882302
+    sha256: f226e51375dc839d4b40e5c3d63da560dd1ea1c962364ec78f5adf2d05db05c0
+    licence: Apache-2.0
+
+  # --- Audio tools (snapshots into the shared Hugging Face cache) ------------------------------
+  soulx_singer:
+    repo: Soul-AILab/SoulX-Singer
+    file: "*"
+    dest: hf
+    size: 5612057432
+    licence: Apache-2.0
+    note: model.pt (SVS) and model-svc.pt (SVC)
+  soulx_preprocess:
+    repo: Soul-AILab/SoulX-Singer-Preprocess
+    file: "*"
+    dest: hf
+    licence: Apache-2.0
+    note: RoFormer karaoke and dereverb, RMVPE, ROSVOT, Paraformer
+  voxcpm2:
+    repo: openbmb/VoxCPM2
+    file: "*"
+    dest: hf
+    size: 4957031714
+    licence: Apache-2.0
